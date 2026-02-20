@@ -31,7 +31,7 @@ public class userTests {
         User user = new User(username, firstName, lastName, email, password);
 
         assertTrue(user.getActiveStatus());
-        assertEquals(user.getMiles(), 0);
+        assertEquals(user.getDistance(), 0);
 
         assertEquals(user.getUsername(), username);
         assertEquals(user.getFirstName(), firstName);
