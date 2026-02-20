@@ -1,4 +1,4 @@
-package com.fts.flight_ticketing_system.user;
+package com.fts.flight_ticketing_system;
 
 import java.util.HashMap;
 import java.util.zip.DataFormatException;

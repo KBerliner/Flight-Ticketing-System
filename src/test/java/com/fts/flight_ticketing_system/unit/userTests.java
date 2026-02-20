@@ -12,7 +12,7 @@ import java.util.zip.DataFormatException;
 
 import org.junit.jupiter.api.Test;
 
-import com.fts.flight_ticketing_system.user.User;
+import com.fts.flight_ticketing_system.User;
 
 public class userTests {
     @Test
