@@ -13,6 +13,7 @@ public class Flight {
     private Double distance;
     private ZonedDateTime departure;
     private Duration duration;
+    private STATUS status;
 
     public Flight(Double distance, ZonedDateTime departure, Duration duration) {
         this.distance = distance;
@@ -25,7 +26,7 @@ public class Flight {
     }
 
     public STATUS getStatus() {
-        return STATUS.UPCOMING;
+        return status;
     }
 
     public ZonedDateTime getDeparture() {
@@ -46,6 +47,14 @@ public class Flight {
 
     public ZonedDateTime getArrival() {
         return departure.plus(getDuration());
+    }
+
+    public void takeOff() {
+        setStatus(Flight.STATUS.EN_ROUTE);
+    }
+
+    private void setStatus(STATUS status) {
+        this.status = status;
     }
 
 }
