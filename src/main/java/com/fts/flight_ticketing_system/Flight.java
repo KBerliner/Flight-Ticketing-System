@@ -57,4 +57,8 @@ public class Flight {
         this.status = status;
     }
 
+    public void land() {
+        setStatus(Flight.STATUS.LANDED);
+    }
+
 }

@@ -59,4 +59,13 @@ public class flightTests {
 
         assertEquals(Flight.STATUS.EN_ROUTE, flight.getStatus());
     }
+
+    @Test
+    void FlightLanding_UpdatesStatus() {
+        flight.takeOff();
+
+        flight.land();
+
+        assertEquals(Flight.STATUS.LANDED, flight.getStatus());
+    }
 }
