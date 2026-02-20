@@ -51,10 +51,20 @@ public class Flight {
 
     public void takeOff() {
         setStatus(Flight.STATUS.EN_ROUTE);
+
+        setDeparture(now());
+    }
+
+    private void setDeparture(ZonedDateTime newDeparture) {
+        this.departure = newDeparture;
     }
 
     private void setStatus(STATUS status) {
         this.status = status;
+    }
+
+    private ZonedDateTime now() {
+        return ZonedDateTime.now();
     }
 
     public void land() {

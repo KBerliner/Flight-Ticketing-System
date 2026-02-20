@@ -1,6 +1,7 @@
 package com.fts.flight_ticketing_system.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
@@ -14,11 +15,11 @@ import com.fts.flight_ticketing_system.Flight;
 
 public class flightTests {
     Flight flight;
+    ZonedDateTime plannedDeparture = ZonedDateTime.now().plusDays(1);
+    Duration plannedDuration = Duration.ofHours(2);
 
     @BeforeEach
     void setUp() {
-        ZonedDateTime plannedDeparture = ZonedDateTime.now().plusDays(1);
-        Duration plannedDuration = Duration.ofHours(2);
 
         flight = new Flight(10.0, plannedDeparture, plannedDuration);
     }
@@ -67,5 +68,12 @@ public class flightTests {
         flight.land();
 
         assertEquals(Flight.STATUS.LANDED, flight.getStatus());
+    }
+
+    @Test
+    void FlightTakeoff_UpdatesDeparture() {
+        flight.takeOff();
+
+        assertNotEquals(plannedDeparture, flight.getDeparture());
     }
 }
