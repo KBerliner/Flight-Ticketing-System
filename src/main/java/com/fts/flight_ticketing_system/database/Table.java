@@ -26,7 +26,7 @@ public class Table {
         return createdAt;
     }
 
-    public void insertEntry(String rowId, HashMap<String,String> columnsMap) {
+    public void insertEntry(String rowId, HashMap<String, String> columnsMap) {
         if (rows.containsKey(rowId)) {
             System.out.println("Duplicate Key (" + rowId + "), cannot Insert Entry!");
         } else {
@@ -41,7 +41,7 @@ public class Table {
         return rows.get(rowId);
     }
 
-    public void updateEntry(String rowId, HashMap<String,String> valuesMap) {
+    public void updateEntry(String rowId, HashMap<String, String> valuesMap) {
         Row row = rows.get(rowId);
 
         if (!row.getRowId().isEmpty()) {
