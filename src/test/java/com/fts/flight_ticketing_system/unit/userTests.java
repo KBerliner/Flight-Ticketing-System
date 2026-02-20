@@ -31,12 +31,12 @@ public class userTests {
         User user = new User(username, firstName, lastName, email, password);
 
         assertTrue(user.getActiveStatus());
-        assertEquals(user.getDistance(), 0);
 
-        assertEquals(user.getUsername(), username);
-        assertEquals(user.getFirstName(), firstName);
-        assertEquals(user.getLastName(), lastName);
-        assertEquals(user.getEmail(), email);
+        assertEquals(0, user.getDistance());
+        assertEquals(username, user.getUsername());
+        assertEquals(firstName, user.getFirstName());
+        assertEquals(lastName, user.getLastName());
+        assertEquals(email, user.getEmail());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class userTests {
     void shouldHashPassword_OnInitialization() throws DataFormatException {
         User user = new User("", "", "", "email@gmail.com", "Password1234");
 
-        assertNotEquals(user.Password(), "Password1234");
+        assertNotEquals("Password1234", user.Password());
     }
 
     @Test
