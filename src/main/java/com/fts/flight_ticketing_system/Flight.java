@@ -10,18 +10,18 @@ public class Flight {
         LANDED
     }
 
-    private Integer miles;
+    private Double distance;
     private ZonedDateTime departure;
     private Duration duration;
 
-    public Flight(Integer miles, ZonedDateTime departure, Duration duration) {
-        this.miles = miles;
+    public Flight(Double distance, ZonedDateTime departure, Duration duration) {
+        this.distance = distance;
         this.departure = departure;
         this.duration = duration;
     }
 
-    public Integer getMiles() {
-        return miles;
+    public Double getDistance() {
+        return distance;
     }
 
     public STATUS getStatus() {
