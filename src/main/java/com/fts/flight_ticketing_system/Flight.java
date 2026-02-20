@@ -33,11 +33,19 @@ public class Flight {
     }
 
     public Duration getDuration() {
+        ZonedDateTime now = ZonedDateTime.now();
+        Duration passedFlightTime = Duration.between(departure, now);
+        Duration lateDuration = Duration.ofHours(passedFlightTime.compareTo(duration));
+
+        if (lateDuration.isPositive()) {
+
+            return passedFlightTime;
+        }
         return duration;
     }
 
-    public ZonedDateTime getPlannedArrival() {
-        return departure.plus(duration);
+    public ZonedDateTime getArrival() {
+        return departure.plus(getDuration());
     }
 
 }
