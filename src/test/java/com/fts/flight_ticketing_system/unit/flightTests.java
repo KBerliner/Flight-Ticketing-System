@@ -76,4 +76,15 @@ public class flightTests {
 
         assertNotEquals(plannedDeparture, flight.getDeparture());
     }
+
+    @Test
+    void FlightLanding_UpdatesDurationAndArrival() {
+        flight.takeOff();
+
+        flight.land();
+
+        assertNotEquals(plannedDuration, flight.getDuration());
+
+        assertNotEquals(plannedDeparture.plus(plannedDuration), flight.getArrival());
+    }
 }

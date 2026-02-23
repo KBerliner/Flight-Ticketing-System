@@ -19,6 +19,8 @@ public class Flight {
         this.distance = distance;
         this.departure = departure;
         this.duration = duration;
+
+        this.status = STATUS.UPCOMING;
     }
 
     public Double getDistance() {
@@ -69,6 +71,13 @@ public class Flight {
 
     public void land() {
         setStatus(Flight.STATUS.LANDED);
+
+        Duration duration = Duration.ofHours(departure.compareTo(now()));
+        setDuration(duration);
+    }
+
+    private void setDuration(Duration duration) {
+        this.duration = duration;
     }
 
 }
