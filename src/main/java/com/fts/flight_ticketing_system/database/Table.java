@@ -44,7 +44,7 @@ public class Table {
     public void updateEntry(String rowId, HashMap<String, String> valuesMap) {
         Row row = rows.get(rowId);
 
-        if (!row.getRowId().isEmpty()) {
+        if (row != null) {
             valuesMap.forEach( (key, value) -> {
                 row.getColumnValuesMap().put(key, value);
             });

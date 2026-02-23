@@ -3,6 +3,7 @@ package com.fts.flight_ticketing_system.unit.DatabaseTests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -97,6 +98,16 @@ public class tableTests {
         assertEquals("New Value", table.readEntry(rowId).getColumnValuesMap().get("Key"));
 
         assertNotEquals(oldUpdatedAt, newUpdatedAt);
+    }
+
+    @Test
+    void shouldNotUpdateRow_IfRowDoesNotExist() {
+        HashMap<String, String> newColumn = new HashMap<>();
+        newColumn.put("Key", "New Value");
+
+        assertThrows(NullPointerException.class, () -> {
+            table.updateEntry("NON_EXISTENT", newColumn);
+        });
     }
 
     @Test
