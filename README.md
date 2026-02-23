@@ -115,6 +115,7 @@ Flight(Double distance, ZonedDateTime departure, Duration duration)
 - Double distance
 - ZonedDateTime departure
 - Duration duration
+- STATUS status
 
 #### Methods
 
@@ -123,6 +124,12 @@ Flight(Double distance, ZonedDateTime departure, Duration duration)
 - ZonedDateTime getDeparture()
 - Duration getDuration()
 - ZonedDateTime getArrival()
+- void takeOff()
+- private void setDeparture()
+- private void setStatus()
+- private ZonedDateTime now()
+- void land()
+- private void setDuration()
 
 ## Thanks
 
