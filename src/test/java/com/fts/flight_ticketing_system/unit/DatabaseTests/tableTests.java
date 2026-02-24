@@ -5,12 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,23 +16,12 @@ import com.fts.flight_ticketing_system.database.Table;
 
 public class tableTests {
     Table table;
-    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
 
     @BeforeEach
     void initializeTable() {
-        // Setting output stream
-        System.setOut(new PrintStream(outputStream));
-
-        // Initializing Table
         String name = "Table Name";
 
         table = new Table(name);
-    }
-
-    @AfterEach
-    void restoreOutputStream() {
-        System.setOut(originalOut);
     }
 
     @Test
