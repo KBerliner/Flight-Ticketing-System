@@ -1,13 +1,15 @@
 package com.fts.flight_ticketing_system;
 
+import java.util.UUID;
+
 public class Booking {
-    private String id;
+    private UUID id;
 
     public Booking() {
-        this.id = "1";
+        this.id = UUID.randomUUID();
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
     
