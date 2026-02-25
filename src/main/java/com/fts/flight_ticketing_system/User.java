@@ -78,6 +78,7 @@ public class User {
     public HashMap<String, Object> getUserAsHashMap() {
         HashMap<String, Object> userAsHashMap = new HashMap<>();
 
+        userAsHashMap.put("active", active);
         userAsHashMap.put("username", username);
         userAsHashMap.put("firstName", firstName);
         userAsHashMap.put("lastName", lastName);

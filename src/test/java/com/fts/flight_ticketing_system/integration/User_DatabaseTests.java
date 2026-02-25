@@ -3,13 +3,13 @@ package com.fts.flight_ticketing_system.integration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.HashMap;
 import java.util.zip.DataFormatException;
 
 import org.junit.jupiter.api.Test;
 
 import com.fts.flight_ticketing_system.User;
 import com.fts.flight_ticketing_system.database.Database;
-import com.fts.flight_ticketing_system.database.Row;
 import com.fts.flight_ticketing_system.database.Table;
 
 public class User_DatabaseTests {
@@ -23,10 +23,11 @@ public class User_DatabaseTests {
         
         userTable.insertEntry("1234p97g", newUser.getUserAsHashMap());
 
-        Row retrievedUser = userTable.readEntry("1234p97g");
+        HashMap<String, Object> retrievedUser = userTable.readEntry("1234p97g").getColumnValuesMap();
 
         assertNotNull(retrievedUser);
 
-        assertEquals(0, retrievedUser.getColumnValuesMap().get("distance"));
+        assertEquals(0, retrievedUser.get("distance"));
+        assertEquals(true, retrievedUser.get("active"));
     }
 }
