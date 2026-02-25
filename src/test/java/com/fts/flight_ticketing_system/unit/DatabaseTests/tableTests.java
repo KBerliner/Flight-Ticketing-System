@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,12 +17,18 @@ import com.fts.flight_ticketing_system.database.Table;
 
 public class tableTests {
     Table table;
+    UUID rowId;
+    HashMap<String, Object> columns = new HashMap<>();
 
     @BeforeEach
-    void initializeTable() {
+    void setUp() {
+        // Initialize Table
         String name = "Table Name";
-
         table = new Table(name);
+
+        // Initialize Row Setup
+        rowId = UUID.randomUUID();
+        columns.put("Key", "Value");
     }
 
     @Test
@@ -36,40 +43,27 @@ public class tableTests {
 
     @Test
     void shouldInsertEntry() {
-        String rowId = "ROWID";
-        HashMap<String, Object> columns = new HashMap<>();
-        columns.put("Key", "Value");
-
         table.insertEntry(rowId, columns);
-
+ 
         assertEquals(columns, table.readEntry(rowId).getColumnValuesMap());
     }
 
     @Test
     void shouldNotPermitDuplicateRowIds() {
-        String rowId = "ROWID";
-        HashMap<String, Object> columns = new HashMap<>();
-        columns.put("Key", "Value");
-
         table.insertEntry(rowId, columns);
 
-        String newRowId = "ROWID";
         HashMap<String, Object> newColumns = new HashMap<>();
         columns.put("Key_2", "Value_2");
 
-        table.insertEntry(newRowId, newColumns);
+        table.insertEntry(rowId, newColumns);
 
-        HashMap<String, Row> resultingRows = table.getRows();
+        HashMap<UUID, Row> resultingRows = table.getRows();
 
         assertEquals(1, resultingRows.size());
     }
 
     @Test
     void shouldUpdateRow() {
-        String rowId = "ROWID";
-        HashMap<String, Object> columns = new HashMap<>();
-        columns.put("Key", "Value");
-
         table.insertEntry(rowId, columns);
 
         ZonedDateTime oldUpdatedAt = table.readEntry(rowId).getUpdatedAt();
@@ -91,17 +85,15 @@ public class tableTests {
         HashMap<String, String> newColumn = new HashMap<>();
         newColumn.put("Key", "New Value");
 
+        UUID NON_EXISTENT_ROW_ID = UUID.randomUUID();
+
         assertThrows(NullPointerException.class, () -> {
-            table.updateEntry("NON_EXISTENT", newColumn);
+            table.updateEntry(NON_EXISTENT_ROW_ID, newColumn);
         });
     }
 
     @Test
     void shouldDeleteRow() {
-        String rowId = "ROWID";
-        HashMap<String, Object> columns = new HashMap<>();
-        columns.put("Key", "Value");
-
         table.insertEntry(rowId, columns);
 
         table.deleteEntry(rowId);
