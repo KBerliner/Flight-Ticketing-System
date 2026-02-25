@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,7 @@ public class userTests {
 
         assertTrue(user.getActiveStatus());
 
+        assertInstanceOf(UUID.class, user.getId());
         assertEquals(0, user.getDistance());
         assertEquals(username, user.getUsername());
         assertEquals(firstName, user.getFirstName());
