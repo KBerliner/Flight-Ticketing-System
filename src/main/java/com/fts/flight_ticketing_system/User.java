@@ -75,14 +75,15 @@ public class User {
         return distance;
     }
 
-    public HashMap<String, String> getUserAsHashMap() {
-        HashMap<String, String> userAsHashMap = new HashMap<>();
+    public HashMap<String, Object> getUserAsHashMap() {
+        HashMap<String, Object> userAsHashMap = new HashMap<>();
 
         userAsHashMap.put("username", username);
         userAsHashMap.put("firstName", firstName);
         userAsHashMap.put("lastName", lastName);
         userAsHashMap.put("email", email);
         userAsHashMap.put("password", password);
+        userAsHashMap.put("distance", distance);
 
         return userAsHashMap;
     }

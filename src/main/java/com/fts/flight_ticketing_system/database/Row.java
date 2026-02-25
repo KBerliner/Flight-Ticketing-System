@@ -5,11 +5,11 @@ import java.util.HashMap;
 
 public class Row {
     private String rowId;
-    private HashMap<String, String> columnValuesMap;
+    private HashMap<String, Object> columnValuesMap;
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
 
-    public Row(String rowId, HashMap<String, String> columnValuesMap) {
+    public Row(String rowId, HashMap<String, Object> columnValuesMap) {
         this.rowId = rowId;
         this.columnValuesMap = columnValuesMap;
 
@@ -29,7 +29,7 @@ public class Row {
         return updatedAt;
     }
 
-    public HashMap<String, String> getColumnValuesMap() {
+    public HashMap<String, Object> getColumnValuesMap() {
         return columnValuesMap;
     }
 

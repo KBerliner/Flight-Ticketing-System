@@ -37,7 +37,7 @@ public class tableTests {
     @Test
     void shouldInsertEntry() {
         String rowId = "ROWID";
-        HashMap<String, String> columns = new HashMap<>();
+        HashMap<String, Object> columns = new HashMap<>();
         columns.put("Key", "Value");
 
         table.insertEntry(rowId, columns);
@@ -48,13 +48,13 @@ public class tableTests {
     @Test
     void shouldNotPermitDuplicateRowIds() {
         String rowId = "ROWID";
-        HashMap<String, String> columns = new HashMap<>();
+        HashMap<String, Object> columns = new HashMap<>();
         columns.put("Key", "Value");
 
         table.insertEntry(rowId, columns);
 
         String newRowId = "ROWID";
-        HashMap<String, String> newColumns = new HashMap<>();
+        HashMap<String, Object> newColumns = new HashMap<>();
         columns.put("Key_2", "Value_2");
 
         table.insertEntry(newRowId, newColumns);
@@ -67,7 +67,7 @@ public class tableTests {
     @Test
     void shouldUpdateRow() {
         String rowId = "ROWID";
-        HashMap<String, String> columns = new HashMap<>();
+        HashMap<String, Object> columns = new HashMap<>();
         columns.put("Key", "Value");
 
         table.insertEntry(rowId, columns);
@@ -99,7 +99,7 @@ public class tableTests {
     @Test
     void shouldDeleteRow() {
         String rowId = "ROWID";
-        HashMap<String, String> columns = new HashMap<>();
+        HashMap<String, Object> columns = new HashMap<>();
         columns.put("Key", "Value");
 
         table.insertEntry(rowId, columns);

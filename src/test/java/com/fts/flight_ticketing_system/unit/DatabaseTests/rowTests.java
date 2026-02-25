@@ -14,7 +14,7 @@ public class rowTests {
     void shouldCorrectlyInitialize() {
         String rowId = "abcd1234";
 
-        HashMap<String, String> exampleRowColumns = new HashMap<>();
+        HashMap<String, Object> exampleRowColumns = new HashMap<>();
         exampleRowColumns.put("Key", "Value");
 
         Row row = new Row(rowId, exampleRowColumns);
