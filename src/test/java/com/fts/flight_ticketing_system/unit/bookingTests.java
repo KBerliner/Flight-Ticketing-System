@@ -71,4 +71,15 @@ public class bookingTests {
 
         assertTrue(booking.isCheckedIn());
     }
+
+    @Test
+    void shouldNOTAllowCheckIn_Before24HoursBeforeFlightDeparture() {
+        Flight lateFlight = new Flight(10.0, ZonedDateTime.now().plusDays(2), Duration.ofHours(2));
+
+        Booking lateBooking = new Booking(user, lateFlight);
+
+        lateBooking.checkIn();
+
+        assertFalse(lateBooking.isCheckedIn());
+    }
 }
