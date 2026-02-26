@@ -5,16 +5,13 @@ import java.util.UUID;
 public class Booking {
     private UUID id;
     private UUID userId;
+    private UUID flightId;
 
     // Constructor for if a user object is provided
-    public Booking(User user) {
+    public Booking(User user, Flight flight) {
         this.id = UUID.randomUUID();
         this.userId = user.getId();
-    }
-
-    // Constructor for if a user object is NOT provided
-    public Booking() {
-        this.id = UUID.randomUUID();
+        this.flightId = flight.getId();
     }
 
     public UUID getId() {
@@ -23,6 +20,10 @@ public class Booking {
 
     public UUID getUserId() {
         return userId;
+    }
+
+    public UUID getFlightId() {
+        return this.flightId;
     }
     
 }
