@@ -33,7 +33,9 @@ public class Booking {
     }
     
     public void checkIn() {
-        if (flightDeparture.minusDays(1).isBefore(ZonedDateTime.now())) {
+        ZonedDateTime now = ZonedDateTime.now();
+
+        if (flightDeparture.minusDays(1).isBefore(now) && flightDeparture.isAfter(now)) {
             this.checkedIn = true;
         }
     }

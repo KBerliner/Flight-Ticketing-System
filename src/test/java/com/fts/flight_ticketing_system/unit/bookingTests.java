@@ -27,7 +27,7 @@ public class bookingTests {
     void setUp() throws DataFormatException {
         user = new User("Username", "First", "Last", "email@gmail.com", "1234");
 
-        flight = new Flight(10.0, ZonedDateTime.now(), Duration.ofHours(2));
+        flight = new Flight(10.0, ZonedDateTime.now().plusHours(12), Duration.ofHours(2));
 
         booking = new Booking(user, flight);
     }
@@ -81,5 +81,16 @@ public class bookingTests {
         lateBooking.checkIn();
 
         assertFalse(lateBooking.isCheckedIn());
+    }
+
+    @Test
+    void shouldNOTAllowCheckIn_AfterFlightHasDeparted() {
+        Flight alreadyDepartedFlight = new Flight(10.0, ZonedDateTime.now().minusHours(1), Duration.ofHours(2));
+
+        Booking alreadyDepartedBooking = new Booking(user, alreadyDepartedFlight);
+
+        alreadyDepartedBooking.checkIn();
+
+        assertFalse(alreadyDepartedBooking.isCheckedIn());
     }
 }
