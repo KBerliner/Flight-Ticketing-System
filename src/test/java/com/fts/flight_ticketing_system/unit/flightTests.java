@@ -1,11 +1,13 @@
 package com.fts.flight_ticketing_system.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +22,6 @@ public class flightTests {
 
     @BeforeEach
     void setUp() {
-
         flight = new Flight(10.0, plannedDeparture, plannedDuration);
     }
 
@@ -37,6 +38,8 @@ public class flightTests {
         assertEquals(Flight.STATUS.UPCOMING, flight.getStatus());
         assertEquals(Duration.ofHours(2), flight.getDuration());
         assertEquals(plannedArrivalExample, flight.getArrival());
+
+        assertInstanceOf(UUID.class, flight.getId());
     }
 
     @Test
