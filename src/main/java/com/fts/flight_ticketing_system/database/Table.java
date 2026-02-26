@@ -2,10 +2,11 @@ package com.fts.flight_ticketing_system.database;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Table {
     private String name;
-    private HashMap<String, Row> rows;
+    private HashMap<UUID, Row> rows;
     private ZonedDateTime createdAt;
 
     public Table(String tableName) {
@@ -18,7 +19,7 @@ public class Table {
         return name;
     }
 
-    public HashMap<String, Row> getRows() {
+    public HashMap<UUID, Row> getRows() {
         return rows;
     }
 
@@ -26,7 +27,7 @@ public class Table {
         return createdAt;
     }
 
-    public void insertEntry(String rowId, HashMap<String, Object> columnsMap) {
+    public void insertEntry(UUID rowId, HashMap<String, Object> columnsMap) {
         if (rows.containsKey(rowId)) {
             System.out.println("Duplicate Key (" + rowId + "), cannot Insert Entry!");
         } else {
@@ -37,11 +38,11 @@ public class Table {
 
     }
 
-    public Row readEntry(String rowId) {
+    public Row readEntry(UUID rowId) {
         return rows.get(rowId);
     }
 
-    public void updateEntry(String rowId, HashMap<String, String> valuesMap) {
+    public void updateEntry(UUID rowId, HashMap<String, String> valuesMap) {
         Row row = rows.get(rowId);
 
         if (row != null) {
@@ -54,7 +55,7 @@ public class Table {
 
     }
 
-    public void deleteEntry(String rowId) {
+    public void deleteEntry(UUID rowId) {
         rows.remove(rowId);
     }
 }

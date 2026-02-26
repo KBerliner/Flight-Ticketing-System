@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,7 @@ import com.fts.flight_ticketing_system.database.Row;
 public class rowTests {
     @Test
     void shouldCorrectlyInitialize() {
-        String rowId = "abcd1234";
+        UUID rowId = UUID.randomUUID();
 
         HashMap<String, Object> exampleRowColumns = new HashMap<>();
         exampleRowColumns.put("Key", "Value");

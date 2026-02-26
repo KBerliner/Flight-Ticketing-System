@@ -2,14 +2,15 @@ package com.fts.flight_ticketing_system.database;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Row {
-    private String rowId;
+    private UUID rowId;
     private HashMap<String, Object> columnValuesMap;
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
 
-    public Row(String rowId, HashMap<String, Object> columnValuesMap) {
+    public Row(UUID rowId, HashMap<String, Object> columnValuesMap) {
         this.rowId = rowId;
         this.columnValuesMap = columnValuesMap;
 
@@ -17,7 +18,7 @@ public class Row {
         this.updatedAt = ZonedDateTime.now();
     }
 
-    public String getRowId() {
+    public UUID getRowId() {
         return rowId;
     }
 

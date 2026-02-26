@@ -2,6 +2,7 @@ package com.fts.flight_ticketing_system;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 public class Flight {
     public enum STATUS {
@@ -10,6 +11,7 @@ public class Flight {
         LANDED
     }
 
+    private UUID id;
     private Double distance;
     private ZonedDateTime departure;
     private Duration duration;
@@ -21,6 +23,8 @@ public class Flight {
         this.duration = duration;
 
         this.status = STATUS.UPCOMING;
+
+        this.id = UUID.randomUUID();
     }
 
     public Double getDistance() {
@@ -78,6 +82,10 @@ public class Flight {
 
     private void setDuration(Duration duration) {
         this.duration = duration;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
 }

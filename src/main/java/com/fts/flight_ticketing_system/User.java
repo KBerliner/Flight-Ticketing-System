@@ -1,6 +1,7 @@
 package com.fts.flight_ticketing_system;
 
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -8,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 
 public class User {
+    private UUID id;
     private Boolean active;
     private String username;
     private String firstName;
@@ -41,6 +43,9 @@ public class User {
         // Password hashing
         String password_salt = BCrypt.gensalt(12);
         this.password = BCrypt.hashpw(password, password_salt);
+
+        // ID Generation
+        this.id = UUID.randomUUID();
     }
     
     public String getUsername() {
@@ -87,5 +92,9 @@ public class User {
         userAsHashMap.put("distance", distance);
 
         return userAsHashMap;
+    }
+
+    public UUID getId() {
+        return this.id;
     }
 }
