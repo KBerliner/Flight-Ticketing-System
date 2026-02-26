@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import com.fts.flight_ticketing_system.User;
 import com.fts.flight_ticketing_system.database.Database;
+import com.fts.flight_ticketing_system.database.Row;
 import com.fts.flight_ticketing_system.database.Table;
 
 public class User_DatabaseTests {
