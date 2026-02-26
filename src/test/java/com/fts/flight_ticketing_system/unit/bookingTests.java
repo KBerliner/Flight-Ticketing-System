@@ -1,8 +1,10 @@
 package com.fts.flight_ticketing_system.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
@@ -43,9 +45,7 @@ public class bookingTests {
     }
 
     @Test
-    void shouldContainUserId() throws DataFormatException {
-        User user = new User(null, null, null, "email@gmail.com", "blablapassword");
-
+    void shouldContainUserId() {
         UUID expected = user.getId();
         UUID actual = booking.getUserId();
 
@@ -58,5 +58,17 @@ public class bookingTests {
         UUID actual = booking.getFlightId();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldInitialize_AsNotCheckedIn() {
+        assertFalse(booking.isCheckedIn());
+    }
+
+    @Test 
+    void shouldAllowCheckIn_Within24HoursOfFlightDeparture() {
+        booking.checkIn();
+
+        assertTrue(booking.isCheckedIn());
     }
 }

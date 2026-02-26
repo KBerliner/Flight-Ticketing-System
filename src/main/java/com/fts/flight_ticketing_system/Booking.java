@@ -6,12 +6,15 @@ public class Booking {
     private UUID id;
     private UUID userId;
     private UUID flightId;
+    private boolean checkedIn;
 
     // Constructor for if a user object is provided
     public Booking(User user, Flight flight) {
         this.id = UUID.randomUUID();
         this.userId = user.getId();
         this.flightId = flight.getId();
+
+        this.checkedIn = false;
     }
 
     public UUID getId() {
@@ -26,4 +29,11 @@ public class Booking {
         return this.flightId;
     }
     
+    public void checkIn() {
+        this.checkedIn = true;
+    }
+
+    public boolean isCheckedIn() {
+        return checkedIn;
+    }
 }
