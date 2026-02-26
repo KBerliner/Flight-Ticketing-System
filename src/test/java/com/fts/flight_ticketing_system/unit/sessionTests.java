@@ -1,5 +1,6 @@
 package com.fts.flight_ticketing_system.unit;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import java.util.UUID;
@@ -14,5 +15,12 @@ public class sessionTests {
         Session session = new Session();
 
         assertInstanceOf(UUID.class, session.getId());
+    }
+
+    @Test
+    void shouldNotBeImmediatelyExpired() {
+        Session session = new Session();
+
+        assertFalse(session.isExpired());
     }
 }
