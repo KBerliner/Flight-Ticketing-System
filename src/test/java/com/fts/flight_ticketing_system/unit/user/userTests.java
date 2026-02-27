@@ -1,4 +1,4 @@
-package com.fts.flight_ticketing_system.unit;
+package com.fts.flight_ticketing_system.unit.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
