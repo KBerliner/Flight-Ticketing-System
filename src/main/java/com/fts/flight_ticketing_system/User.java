@@ -103,6 +103,6 @@ public class User {
     }
 
     public void removeMiles(Double miles) {
-        this.miles -= miles;
+        if (this.miles >= miles) this.miles -= miles;
     }
 }

@@ -90,4 +90,12 @@ public class userTests {
 
         assertEquals(140.0, user.getMiles());
     }
+
+    @Test
+    void shouldNotRemoveMilesIfUserDoesntHaveEnough() {
+        user.addMiles(5.0);
+        user.removeMiles(10.0);
+
+        assertEquals(5.0, user.getMiles());
+    }
 }
