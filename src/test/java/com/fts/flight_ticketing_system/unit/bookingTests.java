@@ -93,4 +93,11 @@ public class bookingTests {
 
         assertFalse(alreadyDepartedBooking.isCheckedIn());
     }
+
+    @Test
+    void shouldAssignASeatOnCheckIn() {
+        booking.checkIn();
+
+        assertNotNull(booking.getSeat());
+    }
 }

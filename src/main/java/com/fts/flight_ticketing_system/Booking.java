@@ -9,6 +9,7 @@ public class Booking {
     private UUID flightId;
     private boolean checkedIn;
     private ZonedDateTime flightDeparture;
+    private String seat;
 
     // Constructor for if a user object is provided
     public Booking(User user, Flight flight) {
@@ -37,10 +38,16 @@ public class Booking {
 
         if (flightDeparture.minusDays(1).isBefore(now) && flightDeparture.isAfter(now)) {
             this.checkedIn = true;
+
+            this.seat = "12B";
         }
     }
 
     public boolean isCheckedIn() {
         return checkedIn;
+    }
+
+    public String getSeat() {
+        return seat;
     }
 }
