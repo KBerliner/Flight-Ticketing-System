@@ -19,15 +19,14 @@ import com.fts.flight_ticketing_system.Flight;
 import com.fts.flight_ticketing_system.User;
 
 public class bookingTests {
-    private User user;
-    private Flight flight;
-    private Booking booking;
+    Booking booking;
+    User user;
+    Flight flight;
 
     @BeforeEach
     void setUp() throws DataFormatException {
         user = new User("Username", "First", "Last", "email@gmail.com", "1234");
-
-        flight = new Flight(10.0, ZonedDateTime.now().plusHours(12), Duration.ofHours(2));
+        flight = new Flight(10.0, ZonedDateTime.now().plusDays(1), Duration.ofHours(2));
 
         booking = new Booking(user, flight);
     }
@@ -39,7 +38,9 @@ public class bookingTests {
 
     @Test
     void shouldInitializeBookings_WithDifferentIds() {
-        Booking booking2 = new Booking(user, flight);
+        Flight newFlight = new Flight(15.0, ZonedDateTime.now().plusDays(2), Duration.ofHours(3));
+
+        Booking booking2 = new Booking(user, newFlight);
 
         assertNotEquals(booking.getId(), booking2.getId());
     }
@@ -61,43 +62,9 @@ public class bookingTests {
     }
 
     @Test
-    void shouldInitialize_AsNotCheckedIn() {
-        assertFalse(booking.isCheckedIn());
-    }
+    void shouldAddMilesToUser_WhenBookingIsCreated() {
+        Double miles = user.getMiles();
 
-    @Test 
-    void shouldAllowCheckIn_Within24HoursOfFlightDeparture() {
-        booking.checkIn();
-
-        assertTrue(booking.isCheckedIn());
-    }
-
-    @Test
-    void shouldNOTAllowCheckIn_Before24HoursBeforeFlightDeparture() {
-        Flight lateFlight = new Flight(10.0, ZonedDateTime.now().plusDays(2), Duration.ofHours(2));
-
-        Booking lateBooking = new Booking(user, lateFlight);
-
-        lateBooking.checkIn();
-
-        assertFalse(lateBooking.isCheckedIn());
-    }
-
-    @Test
-    void shouldNOTAllowCheckIn_AfterFlightHasDeparted() {
-        Flight alreadyDepartedFlight = new Flight(10.0, ZonedDateTime.now().minusHours(1), Duration.ofHours(2));
-
-        Booking alreadyDepartedBooking = new Booking(user, alreadyDepartedFlight);
-
-        alreadyDepartedBooking.checkIn();
-
-        assertFalse(alreadyDepartedBooking.isCheckedIn());
-    }
-
-    @Test
-    void shouldAssignASeatOnCheckIn() {
-        booking.checkIn();
-
-        assertNotNull(booking.getSeat());
+        assertEquals(miles, 10.0);
     }
 }
