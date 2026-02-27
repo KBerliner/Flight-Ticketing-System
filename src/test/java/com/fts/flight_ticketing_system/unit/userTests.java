@@ -81,4 +81,13 @@ public class userTests {
 
         assertEquals(10.0, user.getMiles());
     }
+
+    @Test
+    void shouldRemoveMiles() {
+        user.addMiles(150.0);
+
+        user.removeMiles(10.0);
+
+        assertEquals(140.0, user.getMiles());
+    }
 }

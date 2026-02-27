@@ -101,4 +101,8 @@ public class User {
     public void addMiles(Double miles) {
         this.miles += miles;
     }
+
+    public void removeMiles(Double miles) {
+        this.miles -= miles;
+    }
 }
