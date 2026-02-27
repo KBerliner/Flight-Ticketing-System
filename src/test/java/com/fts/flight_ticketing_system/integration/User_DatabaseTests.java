@@ -26,6 +26,6 @@ public class User_DatabaseTests {
         Row retrievedUser = userTable.readEntry(rowId);
 
         assertNotNull(retrievedUser);
-        assertEquals(0, retrievedUser.getColumnValuesMap().get("distance"));
+        assertEquals(0.0, retrievedUser.getColumnValuesMap().get("miles"));
     }
 }

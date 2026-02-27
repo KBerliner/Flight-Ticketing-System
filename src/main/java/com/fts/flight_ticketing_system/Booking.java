@@ -1,6 +1,5 @@
 package com.fts.flight_ticketing_system;
 
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public class Booking {
@@ -26,9 +25,5 @@ public class Booking {
 
     public UUID getFlightId() {
         return this.flightId;
-    }
-    
-    public UUID getFlightId() {
-        return flightId;
     }
 }
