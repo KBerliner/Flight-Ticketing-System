@@ -16,7 +16,7 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    private Integer distance;
+    private Double miles;
 
     /**
      * @param username
@@ -28,7 +28,7 @@ public class User {
      */
     public User(String username, String firstName, String lastName, String email, String password) throws DataFormatException {
         active = true;
-        distance = 0;
+        miles = 0.0;
         
         this.username = username;
         this.firstName = firstName;
@@ -76,8 +76,8 @@ public class User {
         return BCrypt.checkpw(password, this.password);
     }
 
-    public Integer getDistance() {
-        return distance;
+    public Double getMiles() {
+        return miles;
     }
 
     public HashMap<String, Object> getUserAsHashMap() {
@@ -89,12 +89,16 @@ public class User {
         userAsHashMap.put("lastName", lastName);
         userAsHashMap.put("email", email);
         userAsHashMap.put("password", password);
-        userAsHashMap.put("distance", distance);
+        userAsHashMap.put("miles", miles);
 
         return userAsHashMap;
     }
 
     public UUID getId() {
         return this.id;
+    }
+
+    public void addMiles(Double miles) {
+        this.miles += miles;
     }
 }
