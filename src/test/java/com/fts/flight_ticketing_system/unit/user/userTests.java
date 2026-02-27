@@ -14,7 +14,9 @@ import java.util.zip.DataFormatException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.fts.flight_ticketing_system.User;
+import com.fts.flight_ticketing_system.user.User;
+
+
 
 public class userTests {
     User user;

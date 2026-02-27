@@ -1,4 +1,4 @@
-package com.fts.flight_ticketing_system;
+package com.fts.flight_ticketing_system.user;
 
 import java.util.HashMap;
 import java.util.UUID;

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.fts.flight_ticketing_system.Flight;
+import com.fts.flight_ticketing_system.flight.Flight;
 
 public class flightTests {
     Flight flight;

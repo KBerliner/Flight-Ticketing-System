@@ -12,9 +12,9 @@ import java.util.zip.DataFormatException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.fts.flight_ticketing_system.Booking;
-import com.fts.flight_ticketing_system.Flight;
-import com.fts.flight_ticketing_system.User;
+import com.fts.flight_ticketing_system.booking.Booking;
+import com.fts.flight_ticketing_system.flight.Flight;
+import com.fts.flight_ticketing_system.user.User;
 
 public class bookingTests {
     Booking booking;

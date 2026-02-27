@@ -1,6 +1,9 @@
-package com.fts.flight_ticketing_system;
+package com.fts.flight_ticketing_system.booking;
 
 import java.util.UUID;
+
+import com.fts.flight_ticketing_system.flight.Flight;
+import com.fts.flight_ticketing_system.user.User;
 
 public class Booking {
     private UUID id;

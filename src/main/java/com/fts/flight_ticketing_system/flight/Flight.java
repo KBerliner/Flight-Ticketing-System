@@ -1,4 +1,4 @@
-package com.fts.flight_ticketing_system;
+package com.fts.flight_ticketing_system.flight;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
