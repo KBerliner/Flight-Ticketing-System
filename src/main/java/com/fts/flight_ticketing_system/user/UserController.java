@@ -10,6 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+    // private Database database = FlightTicketingSystemApplication.database;
+    // private Table usersTable;
+
+    // public UserController() {
+    //     usersTable = database.createTable("users");
+    // }
+
     @GetMapping("/")
     public ResponseEntity<?> hello() throws DataFormatException {
         return ResponseEntity.ok().build();
