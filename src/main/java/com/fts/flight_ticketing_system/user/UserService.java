@@ -15,15 +15,6 @@ public class UserService {
 
     public UserService() throws DataFormatException {
         usersTable = database.createTable("users");
-
-
-
-        // TEMPORARY
-        User userOne = new User("null", "null", "null", "null@gmail.com", "null");
-        User userTwo = new User("username", "first", "last", "email@gmail.com", "password");
-
-        usersTable.insertEntry(userOne.getId(), userOne.getUserAsHashMap());
-        usersTable.insertEntry(userTwo.getId(), userTwo.getUserAsHashMap());
     }
 
     public boolean isNotValidUserInput(HashMap<String, String> user) {
