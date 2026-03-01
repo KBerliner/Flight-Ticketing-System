@@ -101,18 +101,18 @@ public class userServiceTests {
     void shouldReturnTrue_IfInvalidInput_USERNAME() {
         HashMap<String, String> user = new HashMap<>();
 
-        Boolean null_Result = userService.isNotValidUserInput(user);
+        Boolean nullResult = userService.isNotValidUserInput(user);
 
         user.put("username", "");
 
-        Boolean blank_Result = userService.isNotValidUserInput(user);
+        Boolean blankResult = userService.isNotValidUserInput(user);
 
         user.put("username", "Username");
 
-        Boolean valid_Result = userService.isNotValidUserInput(user);
+        Boolean validResult = userService.isNotValidUserInput(user);
 
-        assertTrue(null_Result);
-        assertTrue(blank_Result);
-        assertFalse(valid_Result);
+        assertTrue(nullResult);
+        assertTrue(blankResult);
+        assertFalse(validResult);
     }
 }
