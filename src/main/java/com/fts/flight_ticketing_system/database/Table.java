@@ -42,7 +42,7 @@ public class Table {
         return rows.get(rowId);
     }
 
-    public void updateEntry(UUID rowId, HashMap<String, String> valuesMap) {
+    public void updateEntry(UUID rowId, HashMap<String, Object> valuesMap) {
         Row row = rows.get(rowId);
 
         if (row != null) {

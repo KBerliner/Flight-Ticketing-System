@@ -68,7 +68,7 @@ public class tableTests {
 
         ZonedDateTime oldUpdatedAt = table.readEntry(rowId).getUpdatedAt();
 
-        HashMap<String, String> newColumn = new HashMap<>();
+        HashMap<String, Object> newColumn = new HashMap<>();
         newColumn.put("Key", "New Value");
 
         table.updateEntry(rowId, newColumn);
@@ -82,7 +82,7 @@ public class tableTests {
 
     @Test
     void shouldNotUpdateRow_IfRowDoesNotExist() {
-        HashMap<String, String> newColumn = new HashMap<>();
+        HashMap<String, Object> newColumn = new HashMap<>();
         newColumn.put("Key", "New Value");
 
         UUID NON_EXISTENT_ROW_ID = UUID.randomUUID();

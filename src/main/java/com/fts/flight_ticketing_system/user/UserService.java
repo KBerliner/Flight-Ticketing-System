@@ -35,4 +35,8 @@ public class UserService {
     public HashMap<String, Object> getUser(UUID id) {
         return usersTable.readEntry(id).getColumnValuesMap();
     }
+
+    public void updateUser(UUID id, HashMap<String, Object> updates) {
+        usersTable.updateEntry(id, updates);
+    }
 }

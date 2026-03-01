@@ -52,4 +52,24 @@ public class userServiceTests {
 
         assertEquals(user.getUserAsHashMap(), retrievedUser);
     }
+
+    @Test
+    void shouldUpdateOneUser() throws DataFormatException {
+        User user = new User("null", "null", "null", "email@gmail.com", "password");
+
+        userService.createUser(user);
+
+        HashMap<String, Object> updates = new HashMap<>();
+
+        updates.put("username", "New Username");
+        updates.put("firstName", "First");
+
+        userService.updateUser(user.getId(), updates);
+
+        HashMap<String, Object> newUser = userService.getUser(user.getId());
+
+        assertEquals("New Username", newUser.get("username"));
+        assertEquals("First", newUser.get("firstName"));
+        assertEquals("null", newUser.get("lastName"));
+    }
 }
