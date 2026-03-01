@@ -26,6 +26,13 @@ public class UserService {
         usersTable.insertEntry(userTwo.getId(), userTwo.getUserAsHashMap());
     }
 
+    public boolean isNotValidUserInput(HashMap<String, String> user) {
+        return 
+            user.get("username") == null ||
+            user.get("username").isBlank();
+
+    }
+
     public HashMap<UUID, Row> getAllUsers() {
         return usersTable.getRows();
     }

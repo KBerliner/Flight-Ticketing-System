@@ -31,9 +31,7 @@ public class UserController {
 
     @PostMapping("/")
     public ResponseEntity<?> createUser(@RequestParam HashMap<String, String> user) {
-        if (user.get("username") == null) {
-            return ResponseEntity.badRequest().build();
-        }
+        if (userService.isNotValidUserInput(user)) return ResponseEntity.badRequest().build();
 
         return ResponseEntity.ok().build();
     }
