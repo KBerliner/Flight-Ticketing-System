@@ -1,5 +1,7 @@
 package com.fts.flight_ticketing_system.user;
 
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import org.springframework.http.ResponseEntity;
@@ -8,23 +10,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fts.flight_ticketing_system.FlightTicketingSystemApplication;
-import com.fts.flight_ticketing_system.database.Database;
-import com.fts.flight_ticketing_system.database.Table;
+import com.fts.flight_ticketing_system.database.Row;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    private Database database = FlightTicketingSystemApplication.database;
-    private Table usersTable;
+    private UserService userService;
 
-    public UserController() {
-        usersTable = database.createTable("users");
+    public UserController() throws DataFormatException {
+        userService = new UserService();
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> hello() throws DataFormatException {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<HashMap<UUID, Row>> hello() throws DataFormatException {
+        HashMap<UUID, Row> users = userService.getAllUsers();
+
+        return ResponseEntity.ok().body(users);
     }
 
     @PostMapping("/")
