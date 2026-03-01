@@ -22,7 +22,9 @@ public class UserService {
             user.get("username") == null ||
             user.get("username").isBlank() ||
             user.get("firstName") == null ||
-            user.get("firstName").isBlank();
+            user.get("firstName").isBlank() ||
+            user.get("lastName") == null ||
+            user.get("lastName").isBlank();
     }
 
     public HashMap<UUID, Row> getAllUsers() {
