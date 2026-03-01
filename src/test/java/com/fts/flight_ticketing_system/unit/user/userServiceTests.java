@@ -39,4 +39,17 @@ public class userServiceTests {
         assertEquals(1, users.size());
         assertEquals(user.getUserAsHashMap(), users.get(user.getId()).getColumnValuesMap());
     }
+
+    @Test
+    void shouldRetrieveOneUserFromDB() throws DataFormatException {
+        User user = new User("null", "first", "last", "email@gmail.com", "password");
+        User userTwo = new User("userTwo", "firstName", "lastName", "second@gmail.com", "secondPassword");
+        
+        userService.createUser(user);
+        userService.createUser(userTwo);
+
+        HashMap<String, Object> retrievedUser = userService.getUser(user.getId());
+
+        assertEquals(user.getUserAsHashMap(), retrievedUser);
+    }
 }
