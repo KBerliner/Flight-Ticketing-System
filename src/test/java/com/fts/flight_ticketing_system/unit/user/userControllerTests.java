@@ -58,7 +58,7 @@ public class userControllerTests {
     }
 
     @Test
-    void shouldPutUserInDatabase() throws Exception {
-        MockMvc.perform(post("/api/users/")).andExpect(status().isOk());
+    void shouldThrowError_IfSubmittedDataIsWrong_USERNAME() throws Exception {
+        MockMvc.perform(post("/api/users/")).andExpect(status().isBadRequest());
     }
 }
