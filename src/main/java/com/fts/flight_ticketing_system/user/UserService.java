@@ -44,4 +44,8 @@ public class UserService {
     public void updateUser(UUID id, HashMap<String, Object> updates) {
         usersTable.updateEntry(id, updates);
     }
+
+    public void deleteUser(UUID id) {
+        usersTable.deleteEntry(id);
+    }
 }

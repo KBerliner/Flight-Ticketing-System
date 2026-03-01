@@ -81,4 +81,17 @@ public class userServiceTests {
         assertEquals("First", newUser.get("firstName"));
         assertEquals("null", newUser.get("lastName"));
     }
+
+    @Test
+    void shouldDeleteUser() throws DataFormatException {
+        User user = new User("null", "null", "null", "email@gmail.com", "password");
+
+        userService.createUser(user);
+
+        assertEquals(user.getUserAsHashMap(), userService.getUser(user.getId()));
+
+        userService.deleteUser(user.getId());
+
+        assertEquals(0, userService.getAllUsers().size());
+    }
 }
