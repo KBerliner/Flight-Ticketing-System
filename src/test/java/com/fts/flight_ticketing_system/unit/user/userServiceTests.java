@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.fts.flight_ticketing_system.database.Row;
+import com.fts.flight_ticketing_system.user.User;
 import com.fts.flight_ticketing_system.user.UserService;
 
 public class userServiceTests {
@@ -25,5 +26,17 @@ public class userServiceTests {
         HashMap<UUID, Row> users = userService.getAllUsers();
 
         assertEquals(0, users.size());
+    }
+
+    @Test
+    void shouldAddAUserToDB() throws DataFormatException {
+        User user = new User("null", "first", "last", "email@gmail.com", "password");
+
+        userService.createUser(user);
+
+        HashMap<UUID, Row> users = userService.getAllUsers();
+
+        assertEquals(1, users.size());
+        assertEquals(user.getUserAsHashMap(), users.get(user.getId()).getColumnValuesMap());
     }
 }

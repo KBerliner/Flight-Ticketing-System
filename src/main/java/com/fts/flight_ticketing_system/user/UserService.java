@@ -27,4 +27,8 @@ public class UserService {
     public HashMap<UUID, Row> getAllUsers() {
         return usersTable.getRows();
     }
+
+    public void createUser(User user) {
+        usersTable.insertEntry(user.getId(), user.getUserAsHashMap());
+    }
 }
