@@ -115,4 +115,22 @@ public class userServiceTests {
         assertTrue(blankResult);
         assertFalse(validResult);
     }
+
+    @Test
+    void shouldReturnTrue_IfInvalidInput_FIRSTNAME() {
+        HashMap<String, String> user = new HashMap<>();
+        user.put("username", "Username");
+
+        Boolean nullResult = userService.isNotValidUserInput(user);
+
+        user.put("firstName", "");
+        Boolean blankResult = userService.isNotValidUserInput(user);
+
+        user.put("firstName", "First");
+        Boolean validResult = userService.isNotValidUserInput(user);
+
+        assertTrue(nullResult);
+        assertTrue(blankResult);
+        assertFalse(validResult);
+    }
 }

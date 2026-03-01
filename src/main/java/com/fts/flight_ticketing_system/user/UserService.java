@@ -20,8 +20,9 @@ public class UserService {
     public boolean isNotValidUserInput(HashMap<String, String> user) {
         return 
             user.get("username") == null ||
-            user.get("username").isBlank();
-
+            user.get("username").isBlank() ||
+            user.get("firstName") == null ||
+            user.get("firstName").isBlank();
     }
 
     public HashMap<UUID, Row> getAllUsers() {
