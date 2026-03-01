@@ -54,6 +54,15 @@ public class userServiceTests {
     }
 
     @Test
+    void shouldReturnEmptyHashMap_IfNoUserExists() {
+        UUID id = UUID.randomUUID();
+
+        HashMap<String, Object> result = userService.getUser(id);
+
+        assertEquals(0, result.size());
+    }
+
+    @Test
     void shouldUpdateOneUser() throws DataFormatException {
         User user = new User("null", "null", "null", "email@gmail.com", "password");
 

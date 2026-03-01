@@ -33,7 +33,12 @@ public class UserService {
     }
 
     public HashMap<String, Object> getUser(UUID id) {
-        return usersTable.readEntry(id).getColumnValuesMap();
+        Row row = usersTable.readEntry(id);
+
+        // Returning empty HashMap if row doesn't exist
+        if (row == null) return new HashMap<>();
+
+        return row.getColumnValuesMap();
     }
 
     public void updateUser(UUID id, HashMap<String, Object> updates) {
