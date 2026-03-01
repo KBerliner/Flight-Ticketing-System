@@ -1,9 +1,6 @@
 package com.fts.flight_ticketing_system.unit.user;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -24,7 +21,7 @@ public class userServiceTests {
     }
 
     @Test
-    void shouldNotPass() {
+    void shouldGetNoUsers_FromEmptyDB() {
         HashMap<UUID, Row> users = userService.getAllUsers();
 
         assertEquals(0, users.size());
