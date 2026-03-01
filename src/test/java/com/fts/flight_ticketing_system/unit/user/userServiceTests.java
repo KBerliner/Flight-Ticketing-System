@@ -1,6 +1,7 @@
 package com.fts.flight_ticketing_system.unit.user;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
@@ -100,13 +101,18 @@ public class userServiceTests {
     void shouldReturnTrue_IfInvalidInput_USERNAME() {
         HashMap<String, String> user = new HashMap<>();
 
-        Boolean firstResult = userService.isNotValidUserInput(user);
+        Boolean null_Result = userService.isNotValidUserInput(user);
 
         user.put("username", "");
 
-        Boolean secondResult = userService.isNotValidUserInput(user);
+        Boolean blank_Result = userService.isNotValidUserInput(user);
 
-        assertTrue(firstResult);
-        assertTrue(secondResult);
+        user.put("username", "Username");
+
+        Boolean valid_Result = userService.isNotValidUserInput(user);
+
+        assertTrue(null_Result);
+        assertTrue(blank_Result);
+        assertFalse(valid_Result);
     }
 }
