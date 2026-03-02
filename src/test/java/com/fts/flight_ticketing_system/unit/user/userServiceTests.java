@@ -17,10 +17,15 @@ import com.fts.flight_ticketing_system.user.UserService;
 
 public class userServiceTests {
     UserService userService;
+    User user;
+    HashMap<String, Object> validUserMap;
 
     @BeforeEach
     void setUp() throws DataFormatException {
         userService = new UserService();
+
+        user = new User("Username", "First", "Last", "email@gmail.com", "Password");
+        validUserMap = user.getUserAsHashMap();
     }
 
     @Test
@@ -32,8 +37,6 @@ public class userServiceTests {
 
     @Test
     void shouldAddAUserToDB() throws DataFormatException {
-        User user = new User("null", "first", "last", "email@gmail.com", "password");
-
         userService.createUser(user);
 
         HashMap<UUID, Row> users = userService.getAllUsers();
@@ -44,7 +47,6 @@ public class userServiceTests {
 
     @Test
     void shouldRetrieveOneUserFromDB() throws DataFormatException {
-        User user = new User("null", "first", "last", "email@gmail.com", "password");
         User userTwo = new User("userTwo", "firstName", "lastName", "second@gmail.com", "secondPassword");
         
         userService.createUser(user);
@@ -66,8 +68,6 @@ public class userServiceTests {
 
     @Test
     void shouldUpdateOneUser() throws DataFormatException {
-        User user = new User("null", "null", "null", "email@gmail.com", "password");
-
         userService.createUser(user);
 
         HashMap<String, Object> updates = new HashMap<>();
@@ -86,8 +86,6 @@ public class userServiceTests {
 
     @Test
     void shouldDeleteUser() throws DataFormatException {
-        User user = new User("null", "null", "null", "email@gmail.com", "password");
-
         userService.createUser(user);
 
         assertEquals(user.getUserAsHashMap(), userService.getUser(user.getId()));
@@ -98,58 +96,46 @@ public class userServiceTests {
     }
 
     @Test
+    void shouldReturnFalse_WithValidInput() {
+        Boolean validResult = userService.isNotValidUserInput(validUserMap);
+
+        assertFalse(validResult);
+    }
+
+    @Test
     void shouldReturnTrue_IfInvalidInput_USERNAME() {
-        HashMap<String, String> user = new HashMap<>();
+        String USERNAME = "username";
 
-        Boolean nullResult = userService.isNotValidUserInput(user);
+        validUserMap.remove(USERNAME);
+        
+        Boolean nullResult = userService.isNotValidUserInput(validUserMap);
 
-        user.put("username", "");
+        validUserMap.put("username", "");
 
-        Boolean blankResult = userService.isNotValidUserInput(user);
-
-        user.put("username", "Username");
-
-        Boolean validResult = userService.isNotValidUserInput(user);
+        Boolean emptyResult = userService.isNotValidUserInput(validUserMap);
 
         assertTrue(nullResult);
-        assertTrue(blankResult);
-        assertFalse(validResult);
+        assertTrue(emptyResult);
     }
 
     @Test
-    void shouldReturnTrue_IfInvalidInput_FIRSTNAME() {
-        HashMap<String, String> user = new HashMap<>();
-        user.put("username", "Username");
+    void shouldReturnTrue_IfInvalidInput() {
+        String[] KEYS = {"username", "firstName", "lastName", "email", "password"};
 
-        Boolean nullResult = userService.isNotValidUserInput(user);
+        for (String key : KEYS) {
+            Object originalValue = validUserMap.get(key);
 
-        user.put("firstName", "");
-        Boolean blankResult = userService.isNotValidUserInput(user);
+            validUserMap.remove(key);
+            Boolean nullResult = userService.isNotValidUserInput(validUserMap);
 
-        user.put("firstName", "First");
-        Boolean validResult = userService.isNotValidUserInput(user);
+            validUserMap.put(key, "");
+            Boolean emptyResult = userService.isNotValidUserInput(validUserMap);
 
-        assertTrue(nullResult);
-        assertTrue(blankResult);
-        assertFalse(validResult);
-    }
+            assertTrue(nullResult);
+            assertTrue(emptyResult);
 
-    @Test
-    void shouldReturnTrue_IfInvalidInput_LASTNAME() {
-        HashMap<String, String> user = new HashMap<>();
-        user.put("username", "Username");
-        user.put("firstName", "First");
-
-        Boolean nullResult = userService.isNotValidUserInput(user);
-
-        user.put("lastName", "");
-        Boolean blankResult = userService.isNotValidUserInput(user);
-
-        user.put("lastName", "Last");
-        Boolean validResult = userService.isNotValidUserInput(user);
-
-        assertTrue(nullResult);
-        assertTrue(blankResult);
-        assertFalse(validResult);
+            // RESET HASHMAP
+            validUserMap.put(key, originalValue);
+        }
     }
 }

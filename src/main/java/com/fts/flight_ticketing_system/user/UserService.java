@@ -17,14 +17,16 @@ public class UserService {
         usersTable = database.createTable("users");
     }
 
-    public boolean isNotValidUserInput(HashMap<String, String> user) {
-        return 
-            user.get("username") == null ||
-            user.get("username").isBlank() ||
-            user.get("firstName") == null ||
-            user.get("firstName").isBlank() ||
-            user.get("lastName") == null ||
-            user.get("lastName").isBlank();
+    public boolean isNotValidUserInput(HashMap<String, Object> user) {
+        String[] KEYS = {"username", "firstName", "lastName", "email", "password"};
+
+        for (String key : KEYS) {
+            String field = (String) user.get(key);
+            
+            if (field == null || field.isBlank()) return true;
+        }
+
+        return false;
     }
 
     public HashMap<UUID, Row> getAllUsers() {
