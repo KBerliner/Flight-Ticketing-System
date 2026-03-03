@@ -36,16 +36,21 @@ public class User {
         this.lastName = lastName;
 
         // Email Format Validation
-        if (!email.matches("^[^@]+@[^@]+\\.[^@]+$")) {
+        if (!isValidEmail(email)) {
             throw new DataFormatException();
+        } else {
+            this.email = email;
         }
-        this.email = email;
 
         // Password hashing
         this.password = hashPassword(password);
 
         // ID Generation
         this.id = UUID.randomUUID();
+    }
+
+    private Boolean isValidEmail(String email) {
+        return email.matches("^[^@]+@[^@]+\\.[^@]+$");
     }
 
     private String hashPassword(String password) {
@@ -129,7 +134,7 @@ public class User {
                     break;
 
                 case "email":
-                    setEmail(newDetails.get(key));
+                    if (isValidEmail(newDetails.get(key))) setEmail(newDetails.get(key));
                     break;
 
                 case "password":

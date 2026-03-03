@@ -142,4 +142,22 @@ public class userTests {
 
         assertNotEquals(password, user.getPassword());
     }
+
+    @Test
+    void updatingEmailWithoutCorrectFormatting_WontUpdateEmail() {
+        String oldEmail = user.getEmail();
+        HashMap<String, String> newDetails = new HashMap<>();
+
+        newDetails.put("email", "");
+        user.update(newDetails);
+        assertEquals(oldEmail, user.getEmail());
+
+        newDetails.put("email", "emailgmail.com");
+        user.update(newDetails);
+        assertEquals(oldEmail, user.getEmail());
+
+        newDetails.put("email", "email@gmail");
+        user.update(newDetails);
+        assertEquals(oldEmail, user.getEmail());
+    }
 }
