@@ -73,15 +73,15 @@ public class userServiceTests {
         HashMap<String, Object> updates = new HashMap<>();
 
         updates.put("username", "New Username");
-        updates.put("firstName", "First");
+        updates.put("firstName", "FirstName");
 
         userService.updateUser(user.getId(), updates);
 
         HashMap<String, Object> newUser = userService.getUser(user.getId());
 
         assertEquals("New Username", newUser.get("username"));
-        assertEquals("First", newUser.get("firstName"));
-        assertEquals("null", newUser.get("lastName"));
+        assertEquals("FirstName", newUser.get("firstName"));
+        assertEquals("Last", newUser.get("lastName"));
     }
 
     @Test
