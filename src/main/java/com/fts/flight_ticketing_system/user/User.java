@@ -1,6 +1,7 @@
 package com.fts.flight_ticketing_system.user;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
 
@@ -68,7 +69,7 @@ public class User {
         return email;
     }
 
-    public String Password() {
+    public String getPassword() {
         return password;
     }
 
@@ -104,5 +105,56 @@ public class User {
 
     public void removeMiles(Double miles) {
         if (this.miles >= miles) this.miles -= miles;
+    }
+
+    public void update(HashMap<String, String> newDetails) {
+        Set<String> keys = newDetails.keySet();
+
+        keys.forEach((key) -> {
+            switch (key) {
+                case "username":
+                    setUsername(newDetails.get(key));
+                    break;
+            
+                case "firstName":
+                    setFirstName(newDetails.get(key));
+                    break;
+
+                case "lastName":
+                    setLastName(newDetails.get(key));
+                    break;
+
+                case "email":
+                    setEmail(newDetails.get(key));
+                    break;
+
+                case "password":
+                    setPassword(newDetails.get(key));
+                    break;
+
+                default:
+                    break;
+            }
+        });
+    }
+
+    private void setPassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    private void setEmail(String newEmail) {
+        this.email = newEmail;
+    }
+
+    private void setLastName(String newLastName) {
+        this.lastName = newLastName;
+    }
+
+    private void setFirstName(String newFirstName) {
+        this.firstName = newFirstName;
+    }
+
+    private void setUsername(String newUsername) {
+        this.username = newUsername;
     }
 }

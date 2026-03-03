@@ -62,7 +62,7 @@ public class userTests {
 
     @Test
     void shouldHashPassword_OnInitialization() throws DataFormatException {
-        assertNotEquals("Password1234", user.Password());
+        assertNotEquals("Password1234", user.getPassword());
     }
 
     @Test
@@ -99,5 +99,36 @@ public class userTests {
         user.removeMiles(10.0);
 
         assertEquals(5.0, user.getMiles());
+    }
+
+    @Test
+    void shouldUpdateUserDetails() {
+        String notExpectedUsername = user.getUsername();
+        String notExpectedFirstName = user.getFirstName();
+        String notExpectedLastName = user.getLastName();
+        String notExpectedEmail = user.getEmail();
+        String notExpectedPassword = user.getPassword();
+
+        HashMap<String, String> newDetails = new HashMap<>();
+
+        newDetails.put("username", "NewUser");
+        newDetails.put("firstName", "John");
+        newDetails.put("lastName", "Doe");
+        newDetails.put("email", "newemail@gmail.com");
+        newDetails.put("password", "UpdatedPassw0rd");
+
+        user.update(newDetails);
+
+        String actualUsername = user.getUsername();
+        String actualFirstName = user.getFirstName();
+        String actualLastName = user.getLastName();
+        String actualEmail = user.getEmail();
+        String actualPassword = user.getPassword();
+
+        assertNotEquals(notExpectedUsername, actualUsername);
+        assertNotEquals(notExpectedFirstName, actualFirstName);
+        assertNotEquals(notExpectedLastName, actualLastName);
+        assertNotEquals(notExpectedEmail, actualEmail);
+        assertNotEquals(notExpectedPassword, actualPassword);
     }
 }
