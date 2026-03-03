@@ -42,11 +42,15 @@ public class User {
         this.email = email;
 
         // Password hashing
-        String password_salt = BCrypt.gensalt(12);
-        this.password = BCrypt.hashpw(password, password_salt);
+        this.password = hashPassword(password);
 
         // ID Generation
         this.id = UUID.randomUUID();
+    }
+
+    private String hashPassword(String password) {
+        String password_salt = BCrypt.gensalt(12);
+        return BCrypt.hashpw(password, password_salt);
     }
     
     public String getUsername() {
@@ -129,7 +133,7 @@ public class User {
                     break;
 
                 case "password":
-                    setPassword(newDetails.get(key));
+                    setPassword(hashPassword(newDetails.get(key)));
                     break;
 
                 default:
@@ -139,6 +143,8 @@ public class User {
     }
 
     private void setPassword(String newPassword) {
+        
+
         this.password = newPassword;
     }
 

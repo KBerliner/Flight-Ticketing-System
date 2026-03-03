@@ -131,4 +131,15 @@ public class userTests {
         assertNotEquals(notExpectedEmail, actualEmail);
         assertNotEquals(notExpectedPassword, actualPassword);
     }
+
+    @Test
+    void updatingPassword_ShouldHashNewPassword() {
+        HashMap<String, String> newDetails = new HashMap<>();
+        String password = "thisisanewpassword";
+        newDetails.put("password", password);
+
+        user.update(newDetails);
+
+        assertNotEquals(password, user.getPassword());
+    }
 }
