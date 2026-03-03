@@ -46,6 +46,41 @@ public class userControllerTests {
 
     @Test
     void shouldGetAllUsers() throws Exception {
+        // Creating 2 users first
+        HashMap<String, String> mappedUser = new HashMap<>();
+        mappedUser.put("username", "Username");
+        mappedUser.put("firstName", "First");
+        mappedUser.put("lastName", "Last");
+        mappedUser.put("email", "email@gmail.com");
+        mappedUser.put("password", "Password");
+
+        jObject = new JSONObject(mappedUser);
+
+        String content = jObject.toJSONString();
+
+        HashMap<String, String> mappedUserTwo = new HashMap<>();
+        mappedUserTwo.put("username", "Username");
+        mappedUserTwo.put("firstName", "First");
+        mappedUserTwo.put("lastName", "Last");
+        mappedUserTwo.put("email", "email@gmail.com");
+        mappedUserTwo.put("password", "Password");
+
+        JSONObject jObjectTwo = new JSONObject(mappedUserTwo);
+
+        String contentTwo = jObjectTwo.toJSONString();
+
+        MockMvc.perform(
+            post("/api/users/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content)
+        );
+
+        MockMvc.perform(
+            post("/api/users/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(contentTwo)
+        );
+
 
         // GET Request that expects an OK status and returns the response as a String
         String result = MockMvc.perform(get("/api/users/"))
