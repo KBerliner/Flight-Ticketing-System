@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.Assert.assertEquals;
@@ -13,10 +14,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.UUID;
 
 import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONObject;
 
 import com.fts.flight_ticketing_system.database.Row;
 import com.fts.flight_ticketing_system.user.UserController;
@@ -28,6 +31,7 @@ public class userControllerTests {
     MockMvc MockMvc;
 
     private JSONParser jsonParser;
+    private JSONObject jObject;
 
     @BeforeEach
     void setUp() {
@@ -58,7 +62,23 @@ public class userControllerTests {
     }
 
     @Test
-    void shouldThrowError_IfSubmittedDataIsWrong_USERNAME() throws Exception {
-        MockMvc.perform(post("/api/users/")).andExpect(status().isBadRequest());
+    void shouldCreateAUser() throws UnsupportedEncodingException, Exception {
+        HashMap<String, String> mappedUser = new HashMap<>();
+        mappedUser.put("username", "Username");
+        mappedUser.put("firstName", "First");
+        mappedUser.put("lastName", "Last");
+        mappedUser.put("email", "email@gmail.com");
+        mappedUser.put("password", "Password");
+
+        jObject = new JSONObject(mappedUser);
+
+        String content = jObject.toJSONString();
+
+        MockMvc.perform(
+            post("/api/users/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content)
+        
+        ).andExpect(status().isCreated());
     }
 }
