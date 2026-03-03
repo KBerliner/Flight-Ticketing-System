@@ -88,4 +88,35 @@ public class userControllerTests {
         assertEquals("Username", jsonObject.get("username"));
         assertNotNull(jsonObject.get("id"));
     }
+
+    @Test
+    void shouldGetOneUserById() throws UnsupportedEncodingException, Exception {
+        HashMap<String, String> mappedUser = new HashMap<>();
+        mappedUser.put("username", "Username");
+        mappedUser.put("firstName", "First");
+        mappedUser.put("lastName", "Last");
+        mappedUser.put("email", "email@gmail.com");
+        mappedUser.put("password", "Password");
+        jObject = new JSONObject(mappedUser);
+        String content = jObject.toJSONString();
+
+        String createdUser = MockMvc.perform(
+            post("/api/users/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content)
+        ).andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
+
+        @SuppressWarnings("unchecked")
+        HashMap<String, Object> createdUserJSON = (HashMap<String, Object>) jsonParser.parse(createdUser);
+
+        String result = MockMvc.perform(
+            get("/api/users/{id}", (String) createdUserJSON.get("id"))
+        ).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+        @SuppressWarnings("unchecked")
+        HashMap<String, Object> resultingJSON = (HashMap<String, Object>) jsonParser.parse(result);
+
+        assertEquals("Username", resultingJSON.get("username"));
+        assertEquals(createdUserJSON.get("id"), resultingJSON.get("id"));
+    }
 }
