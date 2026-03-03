@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -74,11 +75,17 @@ public class userControllerTests {
 
         String content = jObject.toJSONString();
 
-        MockMvc.perform(
+        String result = MockMvc.perform(
             post("/api/users/")
             .contentType(MediaType.APPLICATION_JSON)
             .content(content)
         
-        ).andExpect(status().isCreated());
+        ).andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
+
+        @SuppressWarnings("unchecked")
+        HashMap<String, Object> jsonObject = (HashMap<String, Object>) jsonParser.parse(result);
+
+        assertEquals("Username", jsonObject.get("username"));
+        assertNotNull(jsonObject.get("id"));
     }
 }

@@ -45,7 +45,7 @@ public class UserController {
 
         userService.createUser(constructedUser);
 
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(201).body(constructedUser.getUserAsHashMap());
     }
     
 }
