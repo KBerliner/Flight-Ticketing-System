@@ -19,8 +19,8 @@ public class Table {
         return name;
     }
 
-    public HashMap<UUID, Row> getRows() {
-        return rows;
+    public Row[] getRows() {
+        return (Row[]) rows.values().toArray(new Row[rows.size()]);
     }
 
     public ZonedDateTime getCreatedAt() {

@@ -99,7 +99,6 @@ public class User {
         userAsHashMap.put("firstName", firstName);
         userAsHashMap.put("lastName", lastName);
         userAsHashMap.put("email", email);
-        userAsHashMap.put("password", password);
         userAsHashMap.put("miles", miles);
 
         return userAsHashMap;

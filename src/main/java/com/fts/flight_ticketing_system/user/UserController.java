@@ -24,21 +24,21 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<HashMap<UUID, Row>> hello() throws DataFormatException {
-        System.out.print("CHECKING GET");
-        HashMap<UUID, Row> users = userService.getAllUsers();
+    public ResponseEntity<Row[]> hello() throws DataFormatException {
+        Row[] users = userService.getAllUsers();
 
         return ResponseEntity.ok().body(users);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<HashMap<String, Object>> getOneUser(@PathVariable("id") UUID id) {
-        return ResponseEntity.ok().body(userService.getUser(id));
+        HashMap<String, Object> user = userService.getUser(id);
+
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping(value="/")
     public ResponseEntity<?> createUser(@RequestBody HashMap<String, Object> user) throws DataFormatException {
-        System.out.print(user + " " + userService.isNotValidUserInput(user));
         if (userService.isNotValidUserInput(user)) return ResponseEntity.badRequest().body("WRONG");
 
         User constructedUser = new User(

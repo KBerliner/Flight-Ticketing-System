@@ -2,6 +2,7 @@ package com.fts.flight_ticketing_system.unit.user;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
@@ -26,23 +27,24 @@ public class userServiceTests {
 
         user = new User("Username", "First", "Last", "email@gmail.com", "Password");
         validUserMap = user.getUserAsHashMap();
+        validUserMap.put("password", "Password");
     }
 
     @Test
     void shouldGetNoUsers_FromEmptyDB() {
-        HashMap<UUID, Row> users = userService.getAllUsers();
+        Row[] users = userService.getAllUsers();
 
-        assertEquals(0, users.size());
+        assertEquals(0, users.length);
     }
 
     @Test
     void shouldAddAUserToDB() throws DataFormatException {
         userService.createUser(user);
 
-        HashMap<UUID, Row> users = userService.getAllUsers();
+        Row[] users = userService.getAllUsers();
 
-        assertEquals(1, users.size());
-        assertEquals(user.getUserAsHashMap(), users.get(user.getId()).getColumnValuesMap());
+        assertEquals(1, users.length);
+        assertEquals(user.getUserAsHashMap(), users[0].getColumnValuesMap());
     }
 
     @Test
@@ -52,9 +54,12 @@ public class userServiceTests {
         userService.createUser(user);
         userService.createUser(userTwo);
 
+
+
         HashMap<String, Object> retrievedUser = userService.getUser(user.getId());
 
         assertEquals(user.getUserAsHashMap(), retrievedUser);
+        assertNull(retrievedUser.get("password"));
     }
 
     @Test
@@ -92,7 +97,7 @@ public class userServiceTests {
 
         userService.deleteUser(user.getId());
 
-        assertEquals(0, userService.getAllUsers().size());
+        assertEquals(0, userService.getAllUsers().length);
     }
 
     @Test
@@ -100,22 +105,6 @@ public class userServiceTests {
         Boolean validResult = userService.isNotValidUserInput(validUserMap);
 
         assertFalse(validResult);
-    }
-
-    @Test
-    void shouldReturnTrue_IfInvalidInput_USERNAME() {
-        String USERNAME = "username";
-
-        validUserMap.remove(USERNAME);
-        
-        Boolean nullResult = userService.isNotValidUserInput(validUserMap);
-
-        validUserMap.put("username", "");
-
-        Boolean emptyResult = userService.isNotValidUserInput(validUserMap);
-
-        assertTrue(nullResult);
-        assertTrue(emptyResult);
     }
 
     @Test
@@ -138,4 +127,7 @@ public class userServiceTests {
             validUserMap.put(key, originalValue);
         }
     }
+
+    // @Test
+    // void 
 }

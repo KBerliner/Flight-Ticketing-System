@@ -29,7 +29,7 @@ public class UserService {
         return false;
     }
 
-    public HashMap<UUID, Row> getAllUsers() {
+    public Row[] getAllUsers() {
         return usersTable.getRows();
     }
 
@@ -43,7 +43,11 @@ public class UserService {
         // Returning empty HashMap if row doesn't exist
         if (row == null) return new HashMap<>();
 
-        return row.getColumnValuesMap();
+        HashMap<String, Object> values = row.getColumnValuesMap();
+
+        values.remove("password");
+
+        return values;
     }
 
     public void updateUser(UUID id, HashMap<String, Object> updates) {

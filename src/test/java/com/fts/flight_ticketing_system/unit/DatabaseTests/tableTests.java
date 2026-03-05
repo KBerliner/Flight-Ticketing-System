@@ -57,9 +57,9 @@ public class tableTests {
 
         table.insertEntry(rowId, newColumns);
 
-        HashMap<UUID, Row> resultingRows = table.getRows();
+        Row[] resultingRows = table.getRows();
 
-        assertEquals(1, resultingRows.size());
+        assertEquals(1, resultingRows.length);
     }
 
     @Test
@@ -98,6 +98,6 @@ public class tableTests {
 
         table.deleteEntry(rowId);
 
-        assertEquals(0, table.getRows().size());
+        assertEquals(0, table.getRows().length);
     }
 }

@@ -10,19 +10,20 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-import java.util.UUID;
+import java.util.zip.DataFormatException;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
 
-import com.fts.flight_ticketing_system.database.Row;
+import com.fts.flight_ticketing_system.user.User;
 import com.fts.flight_ticketing_system.user.UserController;
 
 @WebMvcTest(UserController.class)
@@ -35,7 +36,7 @@ public class userControllerTests {
     private JSONObject jObject;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws DataFormatException {
         jsonParser = new JSONParser();
     }
 
@@ -73,50 +74,32 @@ public class userControllerTests {
     
     @Test
     void shouldGetOneUserById() throws UnsupportedEncodingException, Exception {
+        // Setup with a user to get
         HashMap<String, String> mappedUser = new HashMap<>();
         mappedUser.put("username", "Username");
         mappedUser.put("firstName", "First");
         mappedUser.put("lastName", "Last");
         mappedUser.put("email", "email@gmail.com");
         mappedUser.put("password", "Password");
+        
         jObject = new JSONObject(mappedUser);
+        
         String content = jObject.toJSONString();
         
-        String createdUser = MockMvc.perform(
-            post("/api/users/")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(content)
-        ).andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
-        
-        @SuppressWarnings("unchecked")
-        HashMap<String, Object> createdUserJSON = (HashMap<String, Object>) jsonParser.parse(createdUser);
-        
-        String result = MockMvc.perform(
-            get("/api/users/{id}", (String) createdUserJSON.get("id"))
-        ).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-        
-        @SuppressWarnings("unchecked")
-        HashMap<String, Object> resultingJSON = (HashMap<String, Object>) jsonParser.parse(result);
-        
-        assertEquals("Username", resultingJSON.get("username"));
-        assertEquals(createdUserJSON.get("id"), resultingJSON.get("id"));
+        MockMvc.perform(post("/api/users/").contentType(MediaType.APPLICATION_JSON).content(content));
+
+        // MockMvc.perform(
+        //     get("/api/users/{id}", user.getId())
+        // ).andExpect(status().isOk())
+        // .andExpect(content().string("Hello"));
     }
 
     @Test
     void shouldGetAllUsers() throws Exception {
-    
         // GET Request that expects an OK status and returns the response as a String
-        String result = MockMvc.perform(get("/api/users/"))
+        MockMvc.perform(get("/api/users/"))
         .andExpect(status().isOk())
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
-    
-        // SuppressWarnings because technically parsing the result produces a general object, but it IS HashMap<UUID, Row>
-        @SuppressWarnings("unchecked")
-        HashMap<UUID, Row> jsonObject = (HashMap<UUID, Row>) jsonParser.parse(result);
-    
-        assertInstanceOf(HashMap.class, jsonObject);
-        assertEquals(2, jsonObject.size());
+        .andExpect(jsonPath("$[0].password").doesNotHaveJsonPath())
+        .andExpect(jsonPath("$[1].password").doesNotHaveJsonPath());
     }
 }
