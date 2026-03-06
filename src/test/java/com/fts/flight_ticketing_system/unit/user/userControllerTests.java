@@ -12,7 +12,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,12 +22,18 @@ import java.util.zip.DataFormatException;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
 
+import com.fts.flight_ticketing_system.FlightTicketingSystemApplication;
+import com.fts.flight_ticketing_system.database.Database;
+import com.fts.flight_ticketing_system.database.Table;
 import com.fts.flight_ticketing_system.user.User;
 import com.fts.flight_ticketing_system.user.UserController;
 
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc
 public class userControllerTests {
+    private Database database;
+    private Table usersTable;
+
     @Autowired
     MockMvc MockMvc;
 
@@ -37,6 +42,9 @@ public class userControllerTests {
 
     @BeforeEach
     void setUp() throws DataFormatException {
+        database = FlightTicketingSystemApplication.database;
+        usersTable = database.getTables().get("users");
+
         jsonParser = new JSONParser();
     }
 
@@ -75,23 +83,17 @@ public class userControllerTests {
     @Test
     void shouldGetOneUserById() throws UnsupportedEncodingException, Exception {
         // Setup with a user to get
-        HashMap<String, String> mappedUser = new HashMap<>();
-        mappedUser.put("username", "Username");
-        mappedUser.put("firstName", "First");
-        mappedUser.put("lastName", "Last");
-        mappedUser.put("email", "email@gmail.com");
-        mappedUser.put("password", "Password");
-        
-        jObject = new JSONObject(mappedUser);
-        
-        String content = jObject.toJSONString();
-        
-        MockMvc.perform(post("/api/users/").contentType(MediaType.APPLICATION_JSON).content(content));
+        User user = new User("Username", "First", "Last", "email@gmail.com", "Password");
+        usersTable.insertEntry(user.getId(), user.getUserAsHashMap());
 
-        // MockMvc.perform(
-        //     get("/api/users/{id}", user.getId())
-        // ).andExpect(status().isOk())
-        // .andExpect(content().string("Hello"));
+        // Actually retrieve the user
+        MockMvc.perform(
+            get("/api/users/{id}", user.getId())
+        ).andExpect(status().isOk())
+        .andExpect(jsonPath("username").value("Username"))
+        .andExpect(jsonPath("firstName").value("First"))
+        .andExpect(jsonPath("lastName").value("Last"))
+        .andExpect(jsonPath("email").value("email@gmail.com"));
     }
 
     @Test
