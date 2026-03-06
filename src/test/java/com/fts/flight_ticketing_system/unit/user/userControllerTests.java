@@ -25,6 +25,7 @@ import org.json.simple.JSONObject;
 import com.fts.flight_ticketing_system.FlightTicketingSystemApplication;
 import com.fts.flight_ticketing_system.database.Database;
 import com.fts.flight_ticketing_system.database.Table;
+import com.fts.flight_ticketing_system.database.Rows.RowFactory.ROWTYPE;
 import com.fts.flight_ticketing_system.user.User;
 import com.fts.flight_ticketing_system.user.UserController;
 
@@ -84,7 +85,7 @@ public class userControllerTests {
     void shouldGetOneUserById() throws UnsupportedEncodingException, Exception {
         // Setup with a user to get
         User user = new User("Username", "First", "Last", "email@gmail.com", "Password");
-        usersTable.insertEntry(user.getId(), user.getUserAsHashMap());
+        usersTable.insertEntry(ROWTYPE.USER, user.getId(), user);
 
         // Actually retrieve the user
         MockMvc.perform(

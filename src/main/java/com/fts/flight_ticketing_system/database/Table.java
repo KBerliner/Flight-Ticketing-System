@@ -3,16 +3,24 @@ package com.fts.flight_ticketing_system.database;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.zip.DataFormatException;
+
+import com.fts.flight_ticketing_system.database.Rows.Row;
+import com.fts.flight_ticketing_system.database.Rows.RowFactory;
+import com.fts.flight_ticketing_system.database.Rows.RowFactory.ROWTYPE;
 
 public class Table {
     private String name;
     private HashMap<UUID, Row> rows;
     private ZonedDateTime createdAt;
+    private RowFactory rowFactory;
 
     public Table(String tableName) {
         this.name = tableName;
         this.rows = new HashMap<>();
         this.createdAt = ZonedDateTime.now();
+
+        this.rowFactory = new RowFactory();
     }
     
     public String getName() {
@@ -27,11 +35,11 @@ public class Table {
         return createdAt;
     }
 
-    public void insertEntry(UUID rowId, HashMap<String, Object> columnsMap) {
+    public <T> void insertEntry(ROWTYPE type, UUID rowId, T content) throws DataFormatException {
         if (rows.containsKey(rowId)) {
             System.out.println("Duplicate Key (" + rowId + "), cannot Insert Entry!");
         } else {
-            Row row = new Row(rowId, columnsMap);
+            Row row = rowFactory.createRow(type, rowId, content);
             rows.put(rowId, row);
         }
         
@@ -43,13 +51,9 @@ public class Table {
     }
 
     public void updateEntry(UUID rowId, HashMap<String, Object> valuesMap) {
-        Row row = rows.get(rowId);
+        Row<?> row = rows.get(rowId);
 
-        if (row != null) {
-            valuesMap.forEach( (key, value) -> {
-                row.getColumnValuesMap().put(key, value);
-            });
-        }
+        row.updateRow(valuesMap);
 
         row.setUpdatedAt(ZonedDateTime.now());
 

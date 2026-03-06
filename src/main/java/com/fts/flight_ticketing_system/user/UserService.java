@@ -1,13 +1,17 @@
 package com.fts.flight_ticketing_system.user;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import com.fts.flight_ticketing_system.FlightTicketingSystemApplication;
 import com.fts.flight_ticketing_system.database.Database;
-import com.fts.flight_ticketing_system.database.Row;
 import com.fts.flight_ticketing_system.database.Table;
+import com.fts.flight_ticketing_system.database.Rows.Row;
+import com.fts.flight_ticketing_system.database.Rows.RowFactory.ROWTYPE;
 
 public class UserService {
     private Database database = FlightTicketingSystemApplication.database;
@@ -29,24 +33,32 @@ public class UserService {
         return false;
     }
 
-    public Row[] getAllUsers() {
-        return usersTable.getRows();
+    public List<HashMap<String, Object>> getAllUsers() {
+        Row[] rows = usersTable.getRows();
+        List<HashMap<String, Object>> hashMapRows = new ArrayList<>();
+
+        for (Row row : rows) {
+            User user = (User) row.getContent();
+
+            HashMap<String, Object> jsonHashMap = user.getUserAsHashMap();
+
+            hashMapRows.add(jsonHashMap);
+        }
+
+        return hashMapRows;
     }
 
-    public void createUser(User user) {
-        usersTable.insertEntry(user.getId(), user.getUserAsHashMap());
+    public void createUser(User user) throws DataFormatException {
+        // TODO: THIS SHOULD NOT JUST THROW THE EXCEPTION, THE EXCEPTION SHOULD BE HANDLED HERE
+        usersTable.insertEntry(ROWTYPE.USER, user.getId(), user);
     }
 
-    public HashMap<String, Object> getUser(UUID id) {
+    public User getUser(UUID id) {
         Row row = usersTable.readEntry(id);
 
-        // Returning empty HashMap if row doesn't exist
-        if (row == null) return new HashMap<>();
+        if (row == null) throw new NoSuchElementException();
 
-        HashMap<String, Object> values = row.getColumnValuesMap();
-
-        values.remove("password");
-
+        User values = (User) row.getContent();
         return values;
     }
 

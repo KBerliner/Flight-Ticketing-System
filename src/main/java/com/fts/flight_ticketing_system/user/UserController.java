@@ -1,6 +1,7 @@
 package com.fts.flight_ticketing_system.user;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
 
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fts.flight_ticketing_system.database.Row;
+import com.fasterxml.jackson.annotation.JsonGetter;
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,17 +25,18 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Row[]> hello() throws DataFormatException {
-        Row[] users = userService.getAllUsers();
+    public ResponseEntity<List<HashMap<String, Object>>> getAllUsers() throws DataFormatException {
+        List<HashMap<String,Object>> users = userService.getAllUsers();
 
         return ResponseEntity.ok().body(users);
     }
 
+    @JsonGetter
     @GetMapping("/{id}")
     public ResponseEntity<HashMap<String, Object>> getOneUser(@PathVariable("id") UUID id) {
-        HashMap<String, Object> user = userService.getUser(id);
+        User user = userService.getUser(id);
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(user.getUserAsHashMap());
     }
 
     @PostMapping(value="/")

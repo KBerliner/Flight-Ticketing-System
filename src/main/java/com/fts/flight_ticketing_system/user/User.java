@@ -116,29 +116,29 @@ public class User {
         if (this.miles >= miles) this.miles -= miles;
     }
 
-    public void update(HashMap<String, String> newDetails) {
+    public void update(HashMap<String, Object> newDetails) {
         Set<String> keys = newDetails.keySet();
 
         keys.forEach((key) -> {
             switch (key) {
                 case "username":
-                    setUsername(newDetails.get(key));
+                    setUsername((String) newDetails.get(key));
                     break;
             
                 case "firstName":
-                    setFirstName(newDetails.get(key));
+                    setFirstName((String) newDetails.get(key));
                     break;
 
                 case "lastName":
-                    setLastName(newDetails.get(key));
+                    setLastName((String) newDetails.get(key));
                     break;
 
                 case "email":
-                    if (isValidEmail(newDetails.get(key))) setEmail(newDetails.get(key));
+                    if (isValidEmail((String) newDetails.get(key))) setEmail((String) newDetails.get(key));
                     break;
 
                 case "password":
-                    setPassword(hashPassword(newDetails.get(key)));
+                    setPassword(hashPassword((String) newDetails.get(key)));
                     break;
 
                 default:
@@ -167,5 +167,11 @@ public class User {
 
     private void setUsername(String newUsername) {
         this.username = newUsername;
+    }
+
+    public User getSafe() {
+        User temp = this;
+        temp.setPassword(null);
+        return this;
     }
 }

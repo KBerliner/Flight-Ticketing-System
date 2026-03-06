@@ -109,7 +109,7 @@ public class userTests {
         String notExpectedEmail = user.getEmail();
         String notExpectedPassword = user.getPassword();
 
-        HashMap<String, String> newDetails = new HashMap<>();
+        HashMap<String, Object> newDetails = new HashMap<>();
 
         newDetails.put("username", "NewUser");
         newDetails.put("firstName", "John");
@@ -134,7 +134,7 @@ public class userTests {
 
     @Test
     void updatingPassword_ShouldHashNewPassword() {
-        HashMap<String, String> newDetails = new HashMap<>();
+        HashMap<String, Object> newDetails = new HashMap<>();
         String password = "thisisanewpassword";
         newDetails.put("password", password);
 
@@ -146,7 +146,7 @@ public class userTests {
     @Test
     void updatingEmailWithoutCorrectFormatting_WontUpdateEmail() {
         String oldEmail = user.getEmail();
-        HashMap<String, String> newDetails = new HashMap<>();
+        HashMap<String, Object> newDetails = new HashMap<>();
 
         newDetails.put("email", "");
         user.update(newDetails);

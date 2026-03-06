@@ -8,27 +8,32 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.zip.DataFormatException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.fts.flight_ticketing_system.database.Row;
 import com.fts.flight_ticketing_system.database.Table;
+import com.fts.flight_ticketing_system.database.Rows.Row;
+import com.fts.flight_ticketing_system.database.Rows.RowFactory.ROWTYPE;
+import com.fts.flight_ticketing_system.user.User;
 
 public class tableTests {
     Table table;
     UUID rowId;
-    HashMap<String, Object> columns = new HashMap<>();
+    User content;
+    ROWTYPE type;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws DataFormatException {
         // Initialize Table
         String name = "Table Name";
         table = new Table(name);
 
-        // Initialize Row Setup
-        rowId = UUID.randomUUID();
-        columns.put("Key", "Value");
+        // Initialize Row Setup (Starting with User)
+        content = new User("Username", "First", "Last", "email@gmail.com", "Password");
+        rowId = content.getId();
+        type = ROWTYPE.USER;
     }
 
     @Test
@@ -42,20 +47,19 @@ public class tableTests {
     }
 
     @Test
-    void shouldInsertEntry() {
-        table.insertEntry(rowId, columns);
+    void shouldInsertEntry() throws DataFormatException {
+        table.insertEntry(type, rowId, content);
  
-        assertEquals(columns, table.readEntry(rowId).getColumnValuesMap());
+        assertEquals(content, table.readEntry(rowId).getContent());
     }
 
     @Test
-    void shouldNotPermitDuplicateRowIds() {
-        table.insertEntry(rowId, columns);
+    void shouldNotPermitDuplicateRowIds() throws DataFormatException {
+        table.insertEntry(type, rowId, content);
 
-        HashMap<String, Object> newColumns = new HashMap<>();
-        columns.put("Key_2", "Value_2");
+        User newContent = new User(null, null, null, "thisisadifferentemail@gmail.com", "Password");
 
-        table.insertEntry(rowId, newColumns);
+        table.insertEntry(type, rowId, newContent);
 
         Row[] resultingRows = table.getRows();
 
@@ -63,20 +67,22 @@ public class tableTests {
     }
 
     @Test
-    void shouldUpdateRow() {
-        table.insertEntry(rowId, columns);
+    void shouldUpdateRow() throws DataFormatException {
+        table.insertEntry(type, rowId, content);
 
         ZonedDateTime oldUpdatedAt = table.readEntry(rowId).getUpdatedAt();
 
-        HashMap<String, Object> newColumn = new HashMap<>();
-        newColumn.put("Key", "New Value");
+        HashMap<String, Object> newContent = new HashMap<>();
+        newContent.put("username", "New Username");
+        content.update(newContent);
 
-        table.updateEntry(rowId, newColumn);
+        table.updateEntry(rowId, newContent);
+
+        User newRow = (User) table.readEntry(rowId).getContent();
 
         ZonedDateTime newUpdatedAt = table.readEntry(rowId).getUpdatedAt();
 
-        assertEquals("New Value", table.readEntry(rowId).getColumnValuesMap().get("Key"));
-
+        assertEquals("New Username", newRow.getUsername());
         assertNotEquals(oldUpdatedAt, newUpdatedAt);
     }
 
@@ -93,8 +99,8 @@ public class tableTests {
     }
 
     @Test
-    void shouldDeleteRow() {
-        table.insertEntry(rowId, columns);
+    void shouldDeleteRow() throws DataFormatException {
+        table.insertEntry(type, rowId, content);
 
         table.deleteEntry(rowId);
 

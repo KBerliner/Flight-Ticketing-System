@@ -3,16 +3,18 @@ package com.fts.flight_ticketing_system.unit.user;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.fts.flight_ticketing_system.database.Row;
 import com.fts.flight_ticketing_system.user.User;
 import com.fts.flight_ticketing_system.user.UserService;
 
@@ -32,19 +34,21 @@ public class userServiceTests {
 
     @Test
     void shouldGetNoUsers_FromEmptyDB() {
-        Row[] users = userService.getAllUsers();
+        List users = userService.getAllUsers();
 
-        assertEquals(0, users.length);
+        assertEquals(0, users.size());
     }
 
     @Test
     void shouldAddAUserToDB() throws DataFormatException {
         userService.createUser(user);
 
-        Row[] users = userService.getAllUsers();
+        List<HashMap<String, Object>> users = userService.getAllUsers();
 
-        assertEquals(1, users.length);
-        assertEquals(user.getUserAsHashMap(), users[0].getColumnValuesMap());
+        HashMap<String, Object> user = users.get(0);
+
+        assertEquals(1, users.size());
+        assertEquals(user, user);
     }
 
     @Test
@@ -56,19 +60,19 @@ public class userServiceTests {
 
 
 
-        HashMap<String, Object> retrievedUser = userService.getUser(user.getId());
+        User retrievedUser = userService.getUser(user.getId());
 
-        assertEquals(user.getUserAsHashMap(), retrievedUser);
-        assertNull(retrievedUser.get("password"));
+        assertEquals(user, retrievedUser);
+        assertNull(retrievedUser.getPassword());
     }
 
     @Test
-    void shouldReturnEmptyHashMap_IfNoUserExists() {
-        UUID id = UUID.randomUUID();
-
-        HashMap<String, Object> result = userService.getUser(id);
-
-        assertEquals(0, result.size());
+    void shouldThrowNotFoundError_IfNoUserExists() {
+        assertThrows(NoSuchElementException.class, () -> {
+            UUID id = UUID.randomUUID();
+            
+            userService.getUser(id);
+        });
     }
 
     @Test
@@ -82,22 +86,22 @@ public class userServiceTests {
 
         userService.updateUser(user.getId(), updates);
 
-        HashMap<String, Object> newUser = userService.getUser(user.getId());
+        User newUser = userService.getUser(user.getId());
 
-        assertEquals("New Username", newUser.get("username"));
-        assertEquals("FirstName", newUser.get("firstName"));
-        assertEquals("Last", newUser.get("lastName"));
+        assertEquals("New Username", newUser.getUsername());
+        assertEquals("FirstName", newUser.getFirstName());
+        assertEquals("Last", newUser.getLastName());
     }
 
     @Test
     void shouldDeleteUser() throws DataFormatException {
         userService.createUser(user);
 
-        assertEquals(user.getUserAsHashMap(), userService.getUser(user.getId()));
+        assertEquals(user, userService.getUser(user.getId()));
 
         userService.deleteUser(user.getId());
 
-        assertEquals(0, userService.getAllUsers().length);
+        assertEquals(0, userService.getAllUsers().size());
     }
 
     @Test

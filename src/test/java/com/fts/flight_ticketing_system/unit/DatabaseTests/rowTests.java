@@ -3,25 +3,37 @@ package com.fts.flight_ticketing_system.unit.DatabaseTests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.zip.DataFormatException;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.fts.flight_ticketing_system.database.Row;
+import com.fts.flight_ticketing_system.database.Rows.Row;
+import com.fts.flight_ticketing_system.database.Rows.RowFactory;
+import com.fts.flight_ticketing_system.database.Rows.RowFactory.ROWTYPE;
+import com.fts.flight_ticketing_system.user.User;
 
 public class rowTests {
+    private ROWTYPE type;
+    private RowFactory rowFactory;
+    private Row row;
+
+    @BeforeEach
+    void setUp() {
+        rowFactory = new RowFactory();
+    }
+
     @Test
-    void shouldCorrectlyInitialize() {
-        UUID rowId = UUID.randomUUID();
+    void shouldCorrectlyInitialize() throws DataFormatException {
+        type = ROWTYPE.USER;
 
-        HashMap<String, Object> exampleRowColumns = new HashMap<>();
-        exampleRowColumns.put("Key", "Value");
+        User user = new User("Username", "First", "Last", "email@gmail.com", "Password");
 
-        Row row = new Row(rowId, exampleRowColumns);
+        row = rowFactory.createRow(type, user.getId(), user);
 
-        assertEquals(rowId, row.getRowId());
-        assertEquals(exampleRowColumns, row.getColumnValuesMap());
+
+        assertEquals(user.getId(), row.getRowId());
+        assertEquals(user, row.getContent());
 
         assertNotNull(row.getCreatedAt());
         assertNotNull(row.getUpdatedAt());

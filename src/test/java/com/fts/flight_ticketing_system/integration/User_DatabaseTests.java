@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import com.fts.flight_ticketing_system.user.User;
 import com.fts.flight_ticketing_system.database.Database;
-import com.fts.flight_ticketing_system.database.Row;
 import com.fts.flight_ticketing_system.database.Table;
+import com.fts.flight_ticketing_system.database.Rows.RowFactory.ROWTYPE;
 
 public class User_DatabaseTests {
     @Test
@@ -21,11 +21,11 @@ public class User_DatabaseTests {
         User newUser = new User("Username", "First", "Last", "email@gmail.com", "password");
         UUID rowId = newUser.getId();
         
-        userTable.insertEntry(rowId, newUser.getUserAsHashMap());
+        userTable.insertEntry(ROWTYPE.USER, rowId, newUser);
 
-        Row retrievedUser = userTable.readEntry(rowId);
+        User retrievedUser = (User) userTable.readEntry(rowId).getContent();
 
         assertNotNull(retrievedUser);
-        assertEquals(0.0, retrievedUser.getColumnValuesMap().get("miles"));
+        assertEquals(0.0, retrievedUser.getMiles());
     }
 }
