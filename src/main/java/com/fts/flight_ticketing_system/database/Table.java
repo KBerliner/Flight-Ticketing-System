@@ -55,8 +55,6 @@ public class Table {
 
         row.updateRow(valuesMap);
 
-        row.setUpdatedAt(ZonedDateTime.now());
-
     }
 
     public void deleteEntry(UUID rowId) {

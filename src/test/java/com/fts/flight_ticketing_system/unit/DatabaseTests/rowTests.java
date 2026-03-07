@@ -1,5 +1,6 @@
 package com.fts.flight_ticketing_system.unit.DatabaseTests;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -64,5 +65,23 @@ public class rowTests {
 
         assertNotNull(row.getCreatedAt());
         assertNotNull(row.getUpdatedAt());
+    }
+
+    @Test
+    void shouldThrowErrors_IfWrongContentType() throws DataFormatException {
+        Flight flight = new Flight(10.0, ZonedDateTime.now(), Duration.ofHours(2));
+        User user = new User("Username", "First", "Last", "email@gmail.com", "Password");
+
+        assertThrows(DataFormatException.class, () -> {
+            type = ROWTYPE.USER;
+
+            rowFactory.createRow(type, flight.getId(), flight);
+        });
+
+        assertThrows(DataFormatException.class, () -> {
+            type = ROWTYPE.FLIGHT;
+
+            rowFactory.createRow(type, user.getId(), user);
+        });
     }
 }

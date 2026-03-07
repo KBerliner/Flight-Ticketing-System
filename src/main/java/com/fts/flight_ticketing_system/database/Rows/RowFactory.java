@@ -25,9 +25,8 @@ public class RowFactory {
                 return new FlightRow(id, (Flight) content);
         
             default:
-                break;
+                throw new DataFormatException();
         }
 
-        return new UserRow(null, null);
     }
 }
