@@ -78,4 +78,15 @@ public class flightServiceTests {
 
         assertEquals(Duration.ofHours(3), retrievedFlight.getDuration());
     }
+
+    @Test
+    void shouldDeleteFlight() throws DataFormatException {
+        flightService.createFlight(flight);        
+
+        assertEquals(1, flightService.getAllFlights().size());
+
+        flightService.deleteFlight(flight.getId());
+
+        assertEquals(0, flightService.getAllFlights().size());
+    }
 }

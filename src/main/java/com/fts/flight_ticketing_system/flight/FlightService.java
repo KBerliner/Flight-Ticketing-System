@@ -54,4 +54,8 @@ public class FlightService {
     public void updateFlight(UUID id, HashMap<String,Object> updates) {
         flightTable.updateEntry(id, updates);
     }
+
+    public void deleteFlight(UUID id) {
+        flightTable.deleteEntry(id);
+    }
 }
