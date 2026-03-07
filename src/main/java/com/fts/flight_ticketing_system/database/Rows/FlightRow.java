@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import com.fts.flight_ticketing_system.flight.Flight;
 
-public class FlightRow implements Row {
+public class FlightRow implements Row<Flight> {
     private UUID id;
     private Flight flight;
 
@@ -37,19 +37,18 @@ public class FlightRow implements Row {
     }
     
     private void setUpdatedAt(ZonedDateTime newUpdatedAt) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setUpdatedAt'");
+        this.updatedAt = newUpdatedAt;
     }
 
     @Override
-    public Object getContent() {
+    public Flight getContent() {
         return flight;
     }
 
     @Override
-    public void updateRow(HashMap newData) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateRow'");
+    public void updateRow(HashMap<String, Object> newData) {
+        flight.update(newData);
+        setUpdatedAt(ZonedDateTime.now());
     }
     
 }
