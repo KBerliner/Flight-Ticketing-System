@@ -45,10 +45,10 @@ public class userServiceTests {
 
         List<HashMap<String, Object>> users = userService.getAllUsers();
 
-        HashMap<String, Object> user = users.get(0);
+        HashMap<String, Object> retrievedUser = users.get(0);
 
         assertEquals(1, users.size());
-        assertEquals(user, user);
+        assertEquals(user.getUserAsHashMap(), retrievedUser);
     }
 
     @Test
