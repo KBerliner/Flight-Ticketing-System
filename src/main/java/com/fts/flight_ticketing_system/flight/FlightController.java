@@ -8,8 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/flights")
 public class FlightController {
+    private FlightService flightService;
+
+    public FlightController() {
+        flightService = new FlightService();
+    }
+
     @GetMapping("/")
     public ResponseEntity shouldGetAllFlights() {
+
+
         return ResponseEntity.ok().build();
     }
 }
