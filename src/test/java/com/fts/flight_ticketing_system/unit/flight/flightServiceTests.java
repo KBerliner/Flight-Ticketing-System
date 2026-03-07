@@ -8,6 +8,7 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -88,5 +89,12 @@ public class flightServiceTests {
         flightService.deleteFlight(flight.getId());
 
         assertEquals(0, flightService.getAllFlights().size());
+    }
+
+    @Test
+    void shouldThrowNotFoundError_IfNoFlightExistsToDelete() {
+        assertThrows(NoSuchElementException.class, () -> {
+            flightService.deleteFlight(UUID.randomUUID());
+        });
     }
 }

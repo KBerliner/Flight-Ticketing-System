@@ -56,6 +56,7 @@ public class FlightService {
     }
 
     public void deleteFlight(UUID id) {
+        if (flightTable.readEntry(id) == null) throw new NoSuchElementException();
         flightTable.deleteEntry(id);
     }
 }
