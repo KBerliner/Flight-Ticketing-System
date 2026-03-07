@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -104,5 +105,29 @@ public class userControllerTests {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].password").doesNotHaveJsonPath())
         .andExpect(jsonPath("$[1].password").doesNotHaveJsonPath());
+    }
+
+    @Test
+    void shouldUpdateUser() throws Exception {
+        // Setup with a user to udpate
+        User user = new User("Username", "First", "Last", "email@gmail.com", "Password");
+        usersTable.insertEntry(ROWTYPE.USER, user.getId(), user);
+
+        // Create HashMap of updates
+        HashMap<String, Object> updates = new HashMap<>();
+        updates.put("username", "DifferentUsername");
+
+        // Turn it into JSON data
+        jObject = new JSONObject(updates);
+        String content = jObject.toJSONString();
+
+        MockMvc.perform(put("/api/users/{id}", user.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content))
+            .andExpect(status().isOk());
+
+        User retrievedUser = (User) usersTable.readEntry(user.getId()).getContent();
+
+        assertEquals(updates.get("username"), retrievedUser.getUsername());
     }
 }
