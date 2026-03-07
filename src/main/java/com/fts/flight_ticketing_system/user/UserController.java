@@ -40,8 +40,8 @@ public class UserController {
     }
 
     @PostMapping(value="/")
-    public ResponseEntity<?> createUser(@RequestBody HashMap<String, Object> user) throws DataFormatException {
-        if (userService.isNotValidUserInput(user)) return ResponseEntity.badRequest().body("WRONG");
+    public ResponseEntity<HashMap<String, Object>> createUser(@RequestBody HashMap<String, Object> user) throws DataFormatException {
+        if (userService.isNotValidUserInput(user)) return ResponseEntity.badRequest().build();
 
         User constructedUser = new User(
             (String) user.get("username"), 

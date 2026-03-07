@@ -2,6 +2,56 @@
 
 The Flight and Passenger Tracking API is a Test Driven-Development (TDD) project that I'm creating to learn Java and Spring Boot. This system will track flight and passenger information as well as generating boarding passes and checking into flights.
 
+## API
+
+### User Endpoints
+
+#### GET All Users "/api/users/"
+
+##### Accepts:
+
+N/A
+
+##### Expects:
+
+N/A
+
+##### Returns:
+
+ResponseEntity<List<HashMap<String, Object>>>
+
+#### GET One User "/api/users/{id}"
+
+##### Accepts:
+
+@PathVariable("id") UUID id
+
+##### Expects:
+
+- UUID id
+
+##### Returns:
+
+ResponseEntity<HashMap<String, Object>>
+
+#### POST User "/api/users/"
+
+##### Accepts:
+
+@RequestBody HashMap<String, Object>
+
+##### Expects
+
+- String username
+- String firstName
+- String lastName
+- String email
+- String password
+
+##### Returns:
+
+ResponseEntity<HashMap<String, Object>>
+
 ## In-Memory Database
 
 The in-memory database is currently used as a placeholder for testing and development.
@@ -35,20 +85,53 @@ Table(String name)
 #### Properties
 
 - String name
-- HashMap<String, Row> rows
+- HashMap<UUID, Row> rows
 - ZonedDateTime createdAt
+- RowFactory rowFactory
 
 #### Methods
 
 - String getName()
-- HashMap<String, Row> getRows()
+- Row[] getRows()
 - ZonedDateTime getCreatedAt()
-- void insertEntry(String rowId, HashMap<String, String> columnsMap)
-- Row readEntry(String rowId)
-- void updateEntry(String rowId, HashMap<String, String> valuesMap)
-- void deleteEntry(String rowId)
+- void insertEntry(ROWTYPE type, UUID rowId, T content)
+  - Throws DataFormatException
+- Row readEntry(UUID rowId)
+- void updateEntry(UUID rowId, HashMap<String, Object> valuesMap)
+- void deleteEntry(UUID rowId)
 
-### Row Class
+### Row Factory
+
+The row factory builds different rows which store the main data models:
+
+- User
+- Flight
+- Booking
+  - Booking rows are not yet in place, but will be soon.
+
+#### Constructor
+
+RowFactory()
+
+#### Properties
+
+- enum ROWTYPE
+  - USER
+  - FLIGHT
+
+#### Methods
+
+- Row createRow(ROWTYPE type, UUID id, T content) throws DataFormatException
+
+### Row Interface
+
+#### Methods
+
+- UUID getRowId()
+- ZonedDateTime getCreatedAt()
+- ZonedDateTime getUpdatedAt()
+- T getContent()
+- void updateRow(HashMap<String, Object> newData)
 
 #### Constructor
 
@@ -75,20 +158,22 @@ Row(String rowId, HashMap<String, String> columnValuesMap)
 
 #### Constructor
 
-User(String username, String firstName, String lastName, String email, String password) throws DataFormat Exception
+User(String username, String firstName, String lastName, String email, String password) throws DataFormatException
 
 #### Properties
 
+- UUID id
 - Boolean active
 - String username
 - String firstName
 - String lastName
 - String email
 - String password
-- Integer miles
+- Double miles
 
 #### Methods
 
+- UUID getId()
 - String getUsername()
 - Boolean getActiveStatus()
 - String getFirstName()
@@ -96,8 +181,13 @@ User(String username, String firstName, String lastName, String email, String pa
 - String getEmail()
 - String Password()
 - Boolean comparePassword(String password)
-- Integer getMiles()
-- HashMap<String, String> getUserAsHashMap()
+- Double getMiles()
+- HashMap<String, Object> getUserAsHashMap()
+- void addMiles(Double miles)
+- void removeMiles(Double miles)
+- void update(HashMap<String, Object> newDetails)
+- User getSafe()
+  - getSafe returns the user without the password field set to NULL
 
 ### Flight
 
