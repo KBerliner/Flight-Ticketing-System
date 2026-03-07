@@ -42,4 +42,18 @@ public class flightServiceTests {
         assertEquals(1, flights.size());
         assertEquals(flight.getFlightAsHashMap(), retrievedFlight);
     }
+
+    @Test
+    void shouldRetrieveOneFlightFromDB() throws DataFormatException {
+        Flight flight = new Flight(15.0, ZonedDateTime.now().plusDays(2), Duration.ofHours(3));
+
+        flightService.createFlight(flight);
+
+        Flight retrievedFlight = flightService.getFlight(flight.getId());
+
+        List<HashMap<String, Object>> rows = flightService.getAllFlights();
+
+        assertEquals(flight, retrievedFlight);
+        assertEquals(1, rows.size());
+    }
 }

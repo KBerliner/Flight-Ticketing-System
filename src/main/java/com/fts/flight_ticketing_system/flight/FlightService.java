@@ -3,6 +3,8 @@ package com.fts.flight_ticketing_system.flight;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import com.fts.flight_ticketing_system.FlightTicketingSystemApplication;
@@ -37,5 +39,15 @@ public class FlightService {
     public void createFlight(Flight flight) throws DataFormatException {
         // TODO: THIS SHOULD NOT JUST THROW THE EXCEPTION, THE EXCEPTION SHOULD BE HANDLED HERE
         flightTable.insertEntry(ROWTYPE.FLIGHT, flight.getId(), flight);
+    }
+
+    public Flight getFlight(UUID id) {
+        Row row = flightTable.readEntry(id);
+
+        if (row == null) throw new NoSuchElementException();
+
+        Flight values = (Flight) row.getContent();
+
+        return values;
     }
 }
