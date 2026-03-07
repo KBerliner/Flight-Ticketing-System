@@ -1,11 +1,13 @@
 package com.fts.flight_ticketing_system.unit.flight;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.zip.DataFormatException;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -55,5 +57,12 @@ public class flightServiceTests {
 
         assertEquals(flight, retrievedFlight);
         assertEquals(1, rows.size());
+    }
+
+    @Test
+    void shouldThrowNotFoundError_IfNoFlightExists() {
+        assertThrows(NoSuchElementException.class, () -> {
+            flightService.getFlight(null);
+        });
     }
 }
