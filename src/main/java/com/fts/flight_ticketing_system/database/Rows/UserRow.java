@@ -37,8 +37,7 @@ public class UserRow implements Row<User> {
         return updatedAt;
     }
 
-    @Override
-    public void setUpdatedAt(ZonedDateTime newUpdatedAt) {
+    private void setUpdatedAt(ZonedDateTime newUpdatedAt) {
         this.updatedAt = newUpdatedAt;
     }
 
@@ -50,6 +49,7 @@ public class UserRow implements Row<User> {
     @Override
     public void updateRow(HashMap<String, Object> newData) {
         user.update(newData);
+        setUpdatedAt(ZonedDateTime.now());
     }
 
 }

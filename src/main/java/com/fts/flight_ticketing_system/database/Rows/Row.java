@@ -8,7 +8,6 @@ public interface Row<T> {
     public UUID getRowId();
     public ZonedDateTime getCreatedAt();
     public ZonedDateTime getUpdatedAt();
-    public void setUpdatedAt(ZonedDateTime newUpdatedAt);
 
     public T getContent();
     public void updateRow(HashMap<String, Object> newData);
