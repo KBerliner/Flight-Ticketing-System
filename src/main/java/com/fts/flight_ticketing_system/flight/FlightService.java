@@ -50,4 +50,8 @@ public class FlightService {
 
         return values;
     }
+
+    public void updateFlight(UUID id, HashMap<String,Object> updates) {
+        flightTable.updateEntry(id, updates);
+    }
 }

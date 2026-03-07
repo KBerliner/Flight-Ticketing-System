@@ -18,10 +18,12 @@ import com.fts.flight_ticketing_system.flight.FlightService;
 
 public class flightServiceTests {
     FlightService flightService;
+    Flight flight;
 
     @BeforeEach
     void setUp() {
         flightService = new FlightService();
+        flight = new Flight(10.0, ZonedDateTime.now(), Duration.ofHours(2));
     }
 
     @Test
@@ -33,8 +35,6 @@ public class flightServiceTests {
 
     @Test
     void shouldAddFlightToDB() throws DataFormatException {
-        Flight flight = new Flight(10.0, ZonedDateTime.now(), Duration.ofHours(2));
-
         flightService.createFlight(flight);
 
         List<HashMap<String, Object>> flights = flightService.getAllFlights();
@@ -47,8 +47,6 @@ public class flightServiceTests {
 
     @Test
     void shouldRetrieveOneFlightFromDB() throws DataFormatException {
-        Flight flight = new Flight(15.0, ZonedDateTime.now().plusDays(2), Duration.ofHours(3));
-
         flightService.createFlight(flight);
 
         Flight retrievedFlight = flightService.getFlight(flight.getId());
@@ -64,5 +62,20 @@ public class flightServiceTests {
         assertThrows(NoSuchElementException.class, () -> {
             flightService.getFlight(null);
         });
+    }
+
+    @Test
+    void shouldUpdateOneFlight() throws DataFormatException {
+        flightService.createFlight(flight);
+
+        HashMap<String, Object> updates = new HashMap<>();
+
+        updates.put("duration", Duration.ofHours(3));
+
+        flightService.updateFlight(flight.getId(), updates);
+
+        Flight retrievedFlight = flightService.getFlight(flight.getId());
+
+        assertEquals(Duration.ofHours(3), retrievedFlight.getDuration());
     }
 }

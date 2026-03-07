@@ -2,6 +2,8 @@ package com.fts.flight_ticketing_system.flight;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 public class Flight {
@@ -86,6 +88,52 @@ public class Flight {
 
     public UUID getId() {
         return id;
+    }
+
+    public HashMap<String, Object> getFlightAsHashMap() {
+        HashMap<String, Object> flightHashMap = new HashMap<>();
+
+        flightHashMap.put("id", id);
+        flightHashMap.put("distance", distance);
+        flightHashMap.put("departure", departure);
+        flightHashMap.put("duration", duration);
+        flightHashMap.put("status", status);
+
+        return flightHashMap;
+    }
+
+    public void update(HashMap<String, Object> newDetails) {
+        Set<String> keys = newDetails.keySet();
+
+        keys.forEach(key -> {
+            switch (key) {
+                case "status":
+                    if (newDetails.get(key).getClass() == STATUS.class) {
+                        STATUS updatedStatus = (STATUS) newDetails.get(key);
+                        setStatus(updatedStatus);
+                    }
+                    break;
+                
+                case "distance":
+                    setDistance((Double) newDetails.get(key));
+                    break;
+            
+                case "departure":
+                    setDeparture((ZonedDateTime) newDetails.get(key));
+                    break;
+
+                case "duration":
+                    setDuration((Duration) newDetails.get(key));
+                    break;
+
+                default:
+                    break;
+            }
+        });
+    }
+
+    private void setDistance(Double newDistance) {
+        this.distance = newDistance;
     }
 
 }
