@@ -37,18 +37,26 @@ public class flightControllerTests {
         database = FlightTicketingSystemApplication.database;
         flightsTable = database.getTables().get("flights");
 
-        flight = new Flight(10.0, ZonedDateTime.now().minusDays(1), Duration.ofHours(2));
+        flight = new Flight(10.0, ZonedDateTime.now().plusDays(1), Duration.ofHours(2));
     }
 
     @Test
     void shouldHitFlightController() throws Exception {
-        MockMvc.perform(get("/api/flights/")).andExpect(status().isOk());
+        MockMvc.perform(
+            get("/api/flights/"))
+        .andExpect(status().isOk());
     }
 
     @Test
     void shouldGetAllFlights() throws Exception {
         flightsTable.insertEntry(ROWTYPE.FLIGHT, flight.getId(), flight);
+
+        System.out.print(flight.getDuration());
     
-        MockMvc.perform(get("/api/flights/")).andExpect(status().isOk()).andExpect(jsonPath("$[0].status").value(Flight.STATUS.UPCOMING)).andExpect(jsonPath("$[0].status").exists());
+        MockMvc.perform(
+            get("/api/flights/"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].status").value(Flight.STATUS.UPCOMING.toString()))
+        .andExpect(jsonPath("$[0].duration").value(flight.getDuration().toString()));
     }
 }
