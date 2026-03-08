@@ -1,17 +1,21 @@
 package com.fts.flight_ticketing_system.unit.flight;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 
+import org.json.simple.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fts.flight_ticketing_system.FlightTicketingSystemApplication;
@@ -26,6 +30,7 @@ import com.fts.flight_ticketing_system.flight.FlightController;
 public class flightControllerTests {
     private Database database;
     private Table flightsTable;
+    private JSONObject jObject;
 
     private Flight flight;
 
@@ -58,5 +63,23 @@ public class flightControllerTests {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].status").value(Flight.STATUS.UPCOMING.toString()))
         .andExpect(jsonPath("$[0].duration").value(flight.getDuration().toString()));
+    }
+
+    @Test
+    void shouldAddANewFlightToDB() throws Exception {
+        HashMap<String, String> hashedFlight = new HashMap<>();
+        hashedFlight.put("distance", flight.getDistance().toString());
+        hashedFlight.put("departure", flight.getDeparture().toString());
+        hashedFlight.put("duration", flight.getDuration().toString());
+
+        jObject = new JSONObject(hashedFlight);
+        
+        String content = jObject.toJSONString();
+        
+        MockMvc.perform(
+            post("/api/flights/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content)
+        ).andExpect(status().isCreated());
     }
 }
