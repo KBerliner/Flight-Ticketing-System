@@ -1,7 +1,9 @@
 package com.fts.flight_ticketing_system.unit.flight;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,7 +75,6 @@ public class flightControllerTests {
         hashedFlight.put("duration", flight.getDuration().toString());
 
         jObject = new JSONObject(hashedFlight);
-        
         String content = jObject.toJSONString();
         
         MockMvc.perform(
@@ -81,5 +82,30 @@ public class flightControllerTests {
             .contentType(MediaType.APPLICATION_JSON)
             .content(content)
         ).andExpect(status().isCreated());
+    }
+
+    @Test
+    void shouldUpdateAFlight() throws Exception {
+        // Have to setup with a user to update
+        flightsTable.insertEntry(ROWTYPE.FLIGHT, flight.getId(), flight);
+
+        ZonedDateTime oldArrivalTime = flight.getArrival();
+
+        HashMap<String, Object> updatesHashMap = new HashMap<>();
+        updatesHashMap.put("duration", Duration.ofHours(5).toString());
+
+        jObject = new JSONObject(updatesHashMap);
+        String content = jObject.toJSONString();
+
+        MockMvc.perform(
+            put("/api/flights/{id}", flight.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content)
+        ).andExpect(status().isOk());
+
+        Flight retrievedFlight = (Flight) flightsTable.readEntry(flight.getId()).getContent();
+        ZonedDateTime newArrivalTime = retrievedFlight.getArrival();
+
+        assertNotEquals(oldArrivalTime, newArrivalTime);
     }
 }
