@@ -3,6 +3,7 @@ package com.fts.flight_ticketing_system.booking;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
 
@@ -44,6 +45,7 @@ public class BookingService {
     }
 
     public void deleteBooking(UUID id) {
+        if (bookingTable.readEntry(id) == null) throw new NoSuchElementException();
         bookingTable.deleteEntry(id);
     }
     

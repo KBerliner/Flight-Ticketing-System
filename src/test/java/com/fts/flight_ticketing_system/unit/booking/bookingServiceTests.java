@@ -2,10 +2,13 @@ package com.fts.flight_ticketing_system.unit.booking;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -62,5 +65,12 @@ public class bookingServiceTests {
 
         bookingService.deleteBooking(booking.getId());
         assertEquals(0, bookingService.getAllBookings().size());
+    }
+
+    @Test
+    void shouldThrowNotFoundError_IfNoBookingExistsToDelete() {
+        assertThrows(NoSuchElementException.class, () -> {
+            bookingService.deleteBooking(UUID.randomUUID());
+        });
     }
 }
