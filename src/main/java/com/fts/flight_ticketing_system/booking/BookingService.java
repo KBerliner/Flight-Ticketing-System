@@ -51,6 +51,8 @@ public class BookingService {
     }
 
     public HashMap<String, Object> getUserAndFlight(UUID userId, UUID flightId) {
+        System.out.println(userId + " " + flightId);
+
         HashMap<String, Object> data = new HashMap<>();
 
         data.put("user", tables.get("users").readEntry(userId).getContent());

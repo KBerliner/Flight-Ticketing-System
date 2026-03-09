@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +25,9 @@ import com.fts.flight_ticketing_system.database.Database;
 import com.fts.flight_ticketing_system.database.Table;
 import com.fts.flight_ticketing_system.database.Rows.RowFactory.ROWTYPE;
 import com.fts.flight_ticketing_system.flight.Flight;
+import com.fts.flight_ticketing_system.flight.FlightService;
 import com.fts.flight_ticketing_system.user.User;
+import com.fts.flight_ticketing_system.user.UserService;
 
 import net.minidev.json.JSONObject;
 
@@ -35,6 +36,9 @@ import net.minidev.json.JSONObject;
 public class bookingControllerTests {
     Database database;
     Table bookingTable;
+
+    UserService userService;
+    FlightService flightsService;
 
     User user;
     Flight flight;
@@ -49,6 +53,9 @@ public class bookingControllerTests {
     void setUp() throws DataFormatException {
         database = FlightTicketingSystemApplication.database;
         bookingTable = database.getTables().get("bookings");
+
+        userService = new UserService();
+        flightsService = new FlightService();
 
         user = new User("Username", "First", "Last", "email@gmail.com", "Password");
         flight = new Flight(10.0, ZonedDateTime.now().plusDays(2), Duration.ofHours(4));
@@ -71,12 +78,15 @@ public class bookingControllerTests {
 
     @Test
     void shouldCreateABookingInDB() throws Exception {
-        HashMap<String, UUID> bookingItems = new HashMap<>();
-        bookingItems.put("userId", user.getId());
-        bookingItems.put("flightId", flight.getId());
+        // Add user and flight to DB to make booking
+        userService.createUser(user);
+        flightsService.createFlight(flight);
+
+        HashMap<String, String> bookingItems = new HashMap<>();
+        bookingItems.put("userId", user.getId().toString());
+        bookingItems.put("flightId", flight.getId().toString());
 
         jObject = new JSONObject(bookingItems);
-
         String content = jObject.toJSONString();
 
         MockMvc.perform(
