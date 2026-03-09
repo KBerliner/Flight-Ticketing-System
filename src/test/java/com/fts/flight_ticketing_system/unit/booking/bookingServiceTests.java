@@ -3,6 +3,7 @@ package com.fts.flight_ticketing_system.unit.booking;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
@@ -17,10 +18,14 @@ import org.junit.jupiter.api.Test;
 import com.fts.flight_ticketing_system.booking.Booking;
 import com.fts.flight_ticketing_system.booking.BookingService;
 import com.fts.flight_ticketing_system.flight.Flight;
+import com.fts.flight_ticketing_system.flight.FlightService;
 import com.fts.flight_ticketing_system.user.User;
+import com.fts.flight_ticketing_system.user.UserService;
 
 public class bookingServiceTests {
     BookingService bookingService;
+    UserService userService;
+    FlightService flightService;
     User user;
     Flight flight;
     Booking booking;
@@ -28,6 +33,9 @@ public class bookingServiceTests {
     @BeforeEach
     void setUp() throws DataFormatException {
         bookingService = new BookingService();
+        userService = new UserService();
+        flightService = new FlightService();
+
         user = new User("Username", "First", "Last", "email@gmail.com", "Password");
         flight = new Flight(10.0, ZonedDateTime.now().plusDays(1), Duration.ofHours(2));
         booking = new Booking(user, flight);
@@ -72,5 +80,17 @@ public class bookingServiceTests {
         assertThrows(NoSuchElementException.class, () -> {
             bookingService.deleteBooking(UUID.randomUUID());
         });
+    }
+
+    @Test
+    void shouldGetUserAndFlightObjects() throws DataFormatException {
+        // Setting up user and flight in database
+        userService.createUser(user);
+        flightService.createFlight(flight);
+
+        HashMap<String, Object> result = bookingService.getUserAndFlight(user.getId(), flight.getId());
+
+        assertInstanceOf(User.class, result.get("user"));
+        assertInstanceOf(Flight.class, result.get("flight"));
     }
 }

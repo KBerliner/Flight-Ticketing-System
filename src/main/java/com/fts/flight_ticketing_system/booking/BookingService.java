@@ -15,14 +15,15 @@ import com.fts.flight_ticketing_system.database.Rows.RowFactory.ROWTYPE;
 
 public class BookingService {
     private Database database = FlightTicketingSystemApplication.database;
-    private Table bookingTable;
+    private HashMap<String, Table> tables = database.getTables();
+    private Table bookingsTable;
 
     public BookingService() {
-        bookingTable = database.createTable("bookings");
+        bookingsTable = database.createTable("bookings");
     }
 
     public List<HashMap<String, Object>> getAllBookings() {
-        Row[] rows = bookingTable.getRows();
+        Row[] rows = bookingsTable.getRows();
         List<HashMap<String, Object>> hashMapRows = new ArrayList<>();
         
         for (Row row : rows) {
@@ -37,16 +38,25 @@ public class BookingService {
     }
 
     public void createBooking(Booking booking) throws DataFormatException {
-        bookingTable.insertEntry(ROWTYPE.BOOKING, booking.getId(), booking);
+        bookingsTable.insertEntry(ROWTYPE.BOOKING, booking.getId(), booking);
     }
 
     public Booking getBooking(UUID id) {
-        return (Booking) bookingTable.readEntry(id).getContent();
+        return (Booking) bookingsTable.readEntry(id).getContent();
     }
 
     public void deleteBooking(UUID id) {
-        if (bookingTable.readEntry(id) == null) throw new NoSuchElementException();
-        bookingTable.deleteEntry(id);
+        if (bookingsTable.readEntry(id) == null) throw new NoSuchElementException();
+        bookingsTable.deleteEntry(id);
+    }
+
+    public HashMap<String, Object> getUserAndFlight(UUID userId, UUID flightId) {
+        HashMap<String, Object> data = new HashMap<>();
+
+        data.put("user", tables.get("users").readEntry(userId).getContent());
+        data.put("flight", tables.get("flights").readEntry(flightId).getContent());
+
+        return data;
     }
     
 }

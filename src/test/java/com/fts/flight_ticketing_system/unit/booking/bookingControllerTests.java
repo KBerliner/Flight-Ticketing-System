@@ -1,11 +1,14 @@
 package com.fts.flight_ticketing_system.unit.booking;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fts.flight_ticketing_system.FlightTicketingSystemApplication;
@@ -24,6 +28,8 @@ import com.fts.flight_ticketing_system.database.Rows.RowFactory.ROWTYPE;
 import com.fts.flight_ticketing_system.flight.Flight;
 import com.fts.flight_ticketing_system.user.User;
 
+import net.minidev.json.JSONObject;
+
 @WebMvcTest(BookingController.class)
 @AutoConfigureMockMvc
 public class bookingControllerTests {
@@ -33,6 +39,8 @@ public class bookingControllerTests {
     User user;
     Flight flight;
     Booking booking;
+
+    JSONObject jObject;
 
     @Autowired
     MockMvc MockMvc;
@@ -59,5 +67,22 @@ public class bookingControllerTests {
         MockMvc.perform(get("/api/bookings/"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].id").value(booking.getId().toString()));
+    }
+
+    @Test
+    void shouldCreateABookingInDB() throws Exception {
+        HashMap<String, UUID> bookingItems = new HashMap<>();
+        bookingItems.put("userId", user.getId());
+        bookingItems.put("flightId", flight.getId());
+
+        jObject = new JSONObject(bookingItems);
+
+        String content = jObject.toJSONString();
+
+        MockMvc.perform(
+            post("/api/bookings/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content)
+        ).andExpect(status().isCreated());
     }
 }
