@@ -42,5 +42,9 @@ public class BookingService {
     public Booking getBooking(UUID id) {
         return (Booking) bookingTable.readEntry(id).getContent();
     }
+
+    public void deleteBooking(UUID id) {
+        bookingTable.deleteEntry(id);
+    }
     
 }

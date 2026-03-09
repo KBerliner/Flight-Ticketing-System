@@ -53,4 +53,14 @@ public class bookingServiceTests {
 
         assertEquals(booking, retrievedBooking);
     }
+
+    @Test
+    void shouldDeleteBooking() throws DataFormatException {
+        // Creating Booking to delete
+        bookingService.createBooking(booking);
+        assertEquals(booking, bookingService.getBooking(booking.getId()));
+
+        bookingService.deleteBooking(booking.getId());
+        assertEquals(0, bookingService.getAllBookings().size());
+    }
 }
