@@ -10,9 +10,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -129,5 +131,17 @@ public class userControllerTests {
         User retrievedUser = (User) usersTable.readEntry(user.getId()).getContent();
 
         assertEquals(updates.get("username"), retrievedUser.getUsername());
+    }
+
+    @Test
+    void shouldDeleteUser() throws Exception   {
+        // Setup with a user to delete
+        User user = new User("Username", "First", "Last", "email@gmail.com", "Password");
+        usersTable.insertEntry(ROWTYPE.USER, user.getId(), user);
+
+        MockMvc.perform(delete("/api/users/{id}", user.getId())).andExpect(status().isOk());
+
+        // Verify user was deleted
+        assertNull(usersTable.readEntry(user.getId()));
     }
 }

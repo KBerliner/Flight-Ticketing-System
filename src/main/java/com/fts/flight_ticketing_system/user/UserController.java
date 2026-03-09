@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,6 +62,13 @@ public class UserController {
     public ResponseEntity updateUser(@PathVariable("id") UUID id, @RequestBody HashMap<String, Object> updates) {
         User user = userService.getUser(id);
         user.update(updates);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteUser(@PathVariable("id") UUID id) {
+        userService.deleteUser(id);
 
         return ResponseEntity.ok().build();
     }
