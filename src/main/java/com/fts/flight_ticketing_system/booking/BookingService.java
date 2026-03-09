@@ -3,6 +3,7 @@ package com.fts.flight_ticketing_system.booking;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import com.fts.flight_ticketing_system.FlightTicketingSystemApplication;
@@ -36,6 +37,10 @@ public class BookingService {
 
     public void createBooking(Booking booking) throws DataFormatException {
         bookingTable.insertEntry(ROWTYPE.BOOKING, booking.getId(), booking);
+    }
+
+    public Booking getBooking(UUID id) {
+        return (Booking) bookingTable.readEntry(id).getContent();
     }
     
 }

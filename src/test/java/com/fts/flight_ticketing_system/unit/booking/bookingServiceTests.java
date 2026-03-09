@@ -20,12 +20,14 @@ public class bookingServiceTests {
     BookingService bookingService;
     User user;
     Flight flight;
+    Booking booking;
 
     @BeforeEach
     void setUp() throws DataFormatException {
         bookingService = new BookingService();
         user = new User("Username", "First", "Last", "email@gmail.com", "Password");
         flight = new Flight(10.0, ZonedDateTime.now().plusDays(1), Duration.ofHours(2));
+        booking = new Booking(user, flight);
     }
 
     @Test
@@ -36,12 +38,19 @@ public class bookingServiceTests {
 
     @Test
     void shouldAddABookingToDB() throws DataFormatException {
-        Booking booking = new Booking(user, flight);
-
         bookingService.createBooking(booking);
 
         HashMap<String, Object> retrievedBooking = bookingService.getAllBookings().get(0);
 
         assertEquals(booking.getBookingAsHashMap(), retrievedBooking);
+    }
+
+    @Test
+    void shouldGetOneBooking() throws DataFormatException {
+        bookingService.createBooking(booking);
+
+        Booking retrievedBooking = bookingService.getBooking(booking.getId());
+
+        assertEquals(booking, retrievedBooking);
     }
 }
