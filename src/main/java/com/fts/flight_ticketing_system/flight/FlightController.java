@@ -8,6 +8,7 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,6 +51,13 @@ public class FlightController {
     @PutMapping("/{id}")
     public ResponseEntity updateFlight(@PathVariable("id") UUID id, @RequestBody HashMap<String, Object> updates) {
         flightService.updateFlight(id, updates);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteFlight(@PathVariable("id") UUID id) {
+        flightService.deleteFlight(id);
 
         return ResponseEntity.ok().build();
     }

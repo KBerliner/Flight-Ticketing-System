@@ -1,9 +1,11 @@
 package com.fts.flight_ticketing_system.unit.flight;
 
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -86,7 +88,7 @@ public class flightControllerTests {
 
     @Test
     void shouldUpdateAFlight() throws Exception {
-        // Have to setup with a user to update
+        // Have to setup with a flight to update
         flightsTable.insertEntry(ROWTYPE.FLIGHT, flight.getId(), flight);
 
         ZonedDateTime oldArrivalTime = flight.getArrival();
@@ -118,5 +120,16 @@ public class flightControllerTests {
         assertNotEquals(oldArrivalTime, newArrivalTime);
         assertNotEquals(oldDuration, newDuration);
         assertNotEquals(oldDepartureTime, newDepartureTime);
+    }
+
+    @Test
+    void shouldDeleteAFlight() throws Exception {
+        // Add a flight to delete
+        flightsTable.insertEntry(ROWTYPE.FLIGHT, flight.getId(), flight);
+
+        MockMvc.perform(delete("/api/flights/{id}", flight.getId())).andExpect(status().isOk());
+
+        // Ensure flight is deleted
+        assertNull(flightsTable.readEntry(flight.getId()));
     }
 }
