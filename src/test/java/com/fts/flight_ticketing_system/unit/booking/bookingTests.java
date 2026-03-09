@@ -63,6 +63,6 @@ public class bookingTests {
     void shouldAddMilesToUser_WhenBookingIsCreated() {
         Double miles = user.getMiles();
 
-        assertEquals(miles, 10.0);
+        assertEquals(10.0, miles);
     }
 }
