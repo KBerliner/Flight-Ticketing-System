@@ -115,15 +115,15 @@ public class Flight {
                     break;
                 
                 case "distance":
-                    setDistance((Double) newDetails.get(key));
+                    setDistance((Double) Double.parseDouble((String) newDetails.get(key)));
                     break;
             
                 case "departure":
-                    setDeparture((ZonedDateTime) newDetails.get(key));
+                    setDeparture((ZonedDateTime) ZonedDateTime.parse((String) newDetails.get(key)));
                     break;
 
                 case "duration":
-                    setDuration((Duration) newDetails.get(key));
+                    setDuration(Duration.parse((String) newDetails.get(key)));
                     break;
 
                 default:

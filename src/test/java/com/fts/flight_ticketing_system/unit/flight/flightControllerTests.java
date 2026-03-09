@@ -90,9 +90,14 @@ public class flightControllerTests {
         flightsTable.insertEntry(ROWTYPE.FLIGHT, flight.getId(), flight);
 
         ZonedDateTime oldArrivalTime = flight.getArrival();
+        Duration oldDuration = flight.getDuration();
+        Double oldDistance = flight.getDistance();
+        ZonedDateTime oldDepartureTime = flight.getDeparture();
 
         HashMap<String, Object> updatesHashMap = new HashMap<>();
+        updatesHashMap.put("distance", "15.0");
         updatesHashMap.put("duration", Duration.ofHours(5).toString());
+        updatesHashMap.put("departure", ZonedDateTime.now().plusDays(1).plusHours(1).toString());
 
         jObject = new JSONObject(updatesHashMap);
         String content = jObject.toJSONString();
@@ -104,8 +109,14 @@ public class flightControllerTests {
         ).andExpect(status().isOk());
 
         Flight retrievedFlight = (Flight) flightsTable.readEntry(flight.getId()).getContent();
+        Double newDistance = retrievedFlight.getDistance();
         ZonedDateTime newArrivalTime = retrievedFlight.getArrival();
+        Duration newDuration = retrievedFlight.getDuration();
+        ZonedDateTime newDepartureTime = retrievedFlight.getDeparture();
 
+        assertNotEquals(oldDistance, newDistance);
         assertNotEquals(oldArrivalTime, newArrivalTime);
+        assertNotEquals(oldDuration, newDuration);
+        assertNotEquals(oldDepartureTime, newDepartureTime);
     }
 }

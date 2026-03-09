@@ -49,7 +49,8 @@ public class FlightController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateFlight(@PathVariable("id") UUID id, @RequestBody HashMap<String, Object> updates) {
-        System.out.print("HITTING HERE");
+        flightService.updateFlight(id, updates);
+
         return ResponseEntity.ok().build();
     }
 }
