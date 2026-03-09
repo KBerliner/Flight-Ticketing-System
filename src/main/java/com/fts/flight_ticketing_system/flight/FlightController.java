@@ -1,6 +1,7 @@
 package com.fts.flight_ticketing_system.flight;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
 import java.time.Duration;
@@ -57,7 +58,11 @@ public class FlightController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteFlight(@PathVariable("id") UUID id) {
-        flightService.deleteFlight(id);
+        try {
+            flightService.deleteFlight(id);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.badRequest().build();
+        }
 
         return ResponseEntity.ok().build();
     }
