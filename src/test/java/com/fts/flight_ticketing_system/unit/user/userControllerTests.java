@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import org.json.simple.parser.JSONParser;
@@ -143,5 +144,10 @@ public class userControllerTests {
 
         // Verify user was deleted
         assertNull(usersTable.readEntry(user.getId()));
+    }
+
+    @Test
+    void shouldReturnBadRequest_IfUserToDeleteDoesntExist() throws Exception {
+        MockMvc.perform(delete("/api/users/{id}", UUID.randomUUID())).andExpect(status().isBadRequest());
     }
 }

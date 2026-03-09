@@ -67,6 +67,7 @@ public class UserService {
     }
 
     public void deleteUser(UUID id) {
+        if (usersTable.readEntry(id) == null) throw new NoSuchElementException();
         usersTable.deleteEntry(id);
     }
 }
