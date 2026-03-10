@@ -1,5 +1,6 @@
 package com.fts.flight_ticketing_system.unit.booking;
 
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -94,5 +95,30 @@ public class bookingControllerTests {
             .contentType(MediaType.APPLICATION_JSON)
             .content(content)
         ).andExpect(status().isCreated());
+    }
+
+    @Test
+    void shouldAddMilesToUser_WhenBookingIsCreated() throws Exception {
+        Flight newFlight = new Flight(15.1, ZonedDateTime.now().plusDays(2), Duration.ofHours(3));
+        // Add user and new flight to DB to make booking
+        userService.createUser(user);
+        flightsService.createFlight(newFlight);
+
+        HashMap<String, String> bookingItems = new HashMap<>();
+        bookingItems.put("userId", user.getId().toString());
+        bookingItems.put("flightId", newFlight.getId().toString());
+
+        jObject = new JSONObject(bookingItems);
+        String content = jObject.toJSONString();
+
+        MockMvc.perform(
+            post("/api/bookings/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content)
+        ).andExpect(status().isCreated());
+
+        User retrievedUser = userService.getUser(user.getId());
+
+        assertTrue(retrievedUser.getMiles() == 25.1);
     }
 }

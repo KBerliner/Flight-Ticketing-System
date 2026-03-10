@@ -14,14 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fts.flight_ticketing_system.flight.Flight;
 import com.fts.flight_ticketing_system.user.User;
+import com.fts.flight_ticketing_system.user.UserService;
 
 @RestController
 @RequestMapping("/api/bookings")
 public class BookingController {
     BookingService bookingService;
+    UserService userService;
 
-    public BookingController() {
+    public BookingController() throws DataFormatException {
         bookingService = new BookingService();
+        userService = new UserService();
     }
 
     @GetMapping("/")
@@ -33,13 +36,15 @@ public class BookingController {
 
     @PostMapping("/")
     public ResponseEntity createBooking(@RequestBody HashMap<String, String> bookingItems) throws DataFormatException {
-        System.out.println(bookingItems);
-
         HashMap<String, Object> userAndFlight = bookingService.getUserAndFlight(UUID.fromString(bookingItems.get("userId")), UUID.fromString(bookingItems.get("flightId")));
 
-        Booking booking = new Booking((User) userAndFlight.get("user"), (Flight) userAndFlight.get("flight"));
+        User user = (User) userAndFlight.get("user");
+        Flight flight = (Flight) userAndFlight.get("flight");
+        Booking booking = new Booking(user, flight);
 
         bookingService.createBooking(booking);
+
+        // userService.addMilesToUser(UUID.fromString(bookingItems.get("userId")), flight.getDistance());
 
         return ResponseEntity.status(201).build();
     }
