@@ -72,5 +72,19 @@ public class BookingService {
 
         return bookings;
     }
+
+    public List<Booking> getAllBookingsForFlight(UUID id) {
+        List<Booking> bookings = new ArrayList<>();
+
+        Row[] rows = bookingsTable.getRows();
+
+        for (Row row : rows) {
+            Booking content = (Booking) row.getContent();
+
+            if (content.getFlightId() == id) bookings.add(content);
+        }
+
+        return bookings;
+    }
     
 }

@@ -116,4 +116,26 @@ public class bookingServiceTests {
 
         assertEquals(3, bookings.size());
     }
+
+    @Test
+    void shouldGetAllOfOneFlightsBookings_ById() throws DataFormatException {
+        userService.createUser(user);
+
+        // Creating new Users to book one flight
+        User secondUser = new User("numberTwo", "Second", "User", "second@gmail.com", "Second");
+        User thirdUser = new User("numberThree", "Third", "User", "third@gmail.com", "Third");
+
+        // Creating Bookings
+        Booking secondBooking = new Booking(secondUser, flight);
+        Booking thirdBooking = new Booking(thirdUser, flight);
+
+        bookingService.createBooking(booking);
+        bookingService.createBooking(secondBooking);
+        bookingService.createBooking(thirdBooking);
+
+        // Retrieving Bookings
+        List<Booking> bookings = bookingService.getAllBookingsForFlight(flight.getId());
+
+        assertEquals(3, bookings.size());
+    }
 }
