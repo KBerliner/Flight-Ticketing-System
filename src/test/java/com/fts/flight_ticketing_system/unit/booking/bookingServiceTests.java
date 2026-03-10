@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
@@ -92,5 +93,27 @@ public class bookingServiceTests {
 
         assertInstanceOf(User.class, result.get("user"));
         assertInstanceOf(Flight.class, result.get("flight"));
+    }
+
+    @Test
+    void shouldGetAllOfOneUsersBookings_ById() throws DataFormatException {
+        userService.createUser(user);
+        
+        // Creating new flights to book the user on
+        Flight secondFlight = new Flight(23.2, ZonedDateTime.now().plusMonths(1).plusDays(2), Duration.ofHours(4));
+        Flight thirdFlight = new Flight(52.9, ZonedDateTime.now().plusYears(1), Duration.ofHours(7));
+
+        // Creating Bookings
+        Booking secondBooking = new Booking(user, secondFlight);
+        Booking thirdBooking = new Booking(user, thirdFlight);
+
+        bookingService.createBooking(booking);
+        bookingService.createBooking(secondBooking);
+        bookingService.createBooking(thirdBooking);
+
+        // Retrieving Bookings
+        List<Booking> bookings = bookingService.getAllBookingsForUser(user.getId());
+
+        assertEquals(3, bookings.size());
     }
 }
